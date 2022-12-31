@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group":"cwsr:wild_nature",
+  "pattern":
+  [
+    "chc",
+    "heh",
+    "chc"
+  ],
+  "key":
+  {
+    "h":
+    {
+      "item": "minecraft:concrete",
+      "data": 13
+    },
+    "c":
+    {
+      "item": "minecraft:cactus"
+    },
+    "e":
+    {
+      "item": "cwsr:earth_sword"
+    }
+  },
+  "result":
+  {
+    "item": "cwsr:wild_nature",
+    "count": 1
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "parent": "cwsr:cyanwarriorswords/root",
+  "display": {
+    "icon": {
+      "item": "minecraft:planks",
+      "data": 0
+    },
+    "title": {
+      "translate": "advancements.cwsr.i_hope.title"
+    },
+    "description": {
+      "translate": "advancements.cwsr.i_hope.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "ability_totem": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cwsr:ability_totem"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "ability_totem"
+    ]
+  ]
+}

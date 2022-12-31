@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:recipes/root",
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cwsr:beast_essence"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "cwsr:swords/beast/beast_sword_shapeless",
+      "cwsr:swords/beast/golem_sword_shapeless"
+    ]
+  }
+}

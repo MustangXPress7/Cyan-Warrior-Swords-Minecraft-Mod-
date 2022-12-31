@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:recipes/root",
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cwsr:dark_essence"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "cwsr:swords/earth/earth_sword_shapeless",
+      "cwsr:swords/earth/wild_nature_shapeless",
+      "cwsr:swords/mixing/peaceful_nature",
+      "cwsr:swords/mixing/wind_blast",
+      "cwsr:swords/mixing/wind_boom"
+    ]
+  }
+}

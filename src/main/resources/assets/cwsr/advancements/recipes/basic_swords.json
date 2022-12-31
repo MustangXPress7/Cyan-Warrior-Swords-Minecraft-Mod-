@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cwsr:sword_handle"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "cwsr:swords/beast/beast_sword",
+      "cwsr:swords/dark/dark_sword",
+      "cwsr:swords/earth/earth_sword",
+      "cwsr:swords/ender/ender_sword",
+      "cwsr:swords/fire/fire_sword",
+      "cwsr:swords/light/light_sword",
+      "cwsr:swords/thunder/thunder_sword",
+      "cwsr:swords/water/water_sword",
+      "cwsr:swords/wind/wind_sword",
+      "cwsr:items/ability_totem"
+    ]
+  }
+}

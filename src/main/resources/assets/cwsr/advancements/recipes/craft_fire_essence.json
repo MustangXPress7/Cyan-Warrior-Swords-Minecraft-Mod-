@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:recipes/root",
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cwsr:fire_essence"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "cwsr:swords/fire/fire_sword_shapeless",
+      "cwsr:swords/fire/combustion_sword_shapeless",
+      "cwsr:swords/mixing/ender_fire",
+      "cwsr:swords/mixing/meteor_sword",
+      "cwsr:swords/mixing/steam_sword"
+    ]
+  }
+}

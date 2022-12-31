@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:recipes/root",
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ],
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "cwsr:light_essence"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "cwsr:swords/light/light_sword_shapeless",
+      "cwsr:swords/light/light_nether_shapeless",
+      "cwsr:swords/mixing/time_sword"
+    ]
+  }
+}
