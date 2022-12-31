@@ -2,14 +2,14 @@ package com.raptorbk.CyanWarriorSwordsRedux.common.data;
 
 import com.raptorbk.CyanWarriorSwordsRedux.common.recipe.ISubRecipeProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class BaseRecipeProvider extends net.minecraft.data.RecipeProvider {
+public abstract class BaseRecipeProvider extends RecipeProvider {
 
     private final String modid;
 
@@ -24,8 +24,9 @@ public abstract class BaseRecipeProvider extends net.minecraft.data.RecipeProvid
         return super.getName() + modid;
     }
 
+
     @Override
-    protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer)
+    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer)
     {
         getSubRecipeProviders().forEach(subRecipeProvider -> subRecipeProvider.addRecipes(consumer));
     }

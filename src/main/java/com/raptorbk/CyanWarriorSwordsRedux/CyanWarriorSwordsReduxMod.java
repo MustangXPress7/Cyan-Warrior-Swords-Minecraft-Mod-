@@ -2,21 +2,22 @@ package com.raptorbk.CyanWarriorSwordsRedux;
 
 
 import com.google.common.collect.Ordering;
-import com.raptorbk.CyanWarriorSwordsRedux.blocks.testfurn.TransmutationFurnaceBlocks;
-import com.raptorbk.CyanWarriorSwordsRedux.common.data.GeneratorBaseRecipes;
+import com.raptorbk.CyanWarriorSwordsRedux.blocks.transmutationfurnace.*;
 import com.raptorbk.CyanWarriorSwordsRedux.config.Config;
 import com.raptorbk.CyanWarriorSwordsRedux.generate.ModLootModifierProvider;
-import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipeProvider;
+import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipesProvider;
+import com.raptorbk.CyanWarriorSwordsRedux.screens.TransmutationFurnaceScreen;
+import com.raptorbk.CyanWarriorSwordsRedux.util.ModItems;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModMenus;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
-import com.raptorbk.CyanWarriorSwordsRedux.util.TransmutationFurnaceScreen;
-import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.core.NonNullList;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,12 +26,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -42,10 +42,16 @@ public class CyanWarriorSwordsReduxMod
 
     public  static  final String MOD_ID= "cwsr";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
-    public static IEventBus MOD_EVENT_BUS;
     public CyanWarriorSwordsReduxMod() {
+        final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        final IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 
+       TransmutationFurnaceBlocks.BLOCKS.register(modEventBus);
+       TransmutationFurnaceTileEntities.TILE_ENTITIES.register(modEventBus);
 
+       ModItems.ITEMS.register(modEventBus);
+        //serializerInit.SERIALIZERS.register(modEventBus);
+        ModMenus.MENUS.register(modEventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON, "cwsr-common.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT, "cwsr-client.toml");
 
@@ -54,9 +60,10 @@ public class CyanWarriorSwordsReduxMod
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::gatherData);
 
 
+
         Config.loadConfig(Config.CLIENT, FMLPaths.CONFIGDIR.get().resolve("cwsr-client.toml").toString());
         Config.loadConfig(Config.COMMON, FMLPaths.CONFIGDIR.get().resolve("cwsr-common.toml").toString());
-        ModMenus.MENUS.register(FMLJavaModLoadingContext.get().getModEventBus());
+
         RegistryHandler.init();
 
         MinecraftForge.EVENT_BUS.register(this);
@@ -99,7 +106,7 @@ public class CyanWarriorSwordsReduxMod
                 RegistryHandler.tri_ENDER.get(),
                 RegistryHandler.atlantis_SWORD.get(),
                 RegistryHandler.cyan_SWORD.get(),
-                TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.asItem(),
+                TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.get().asItem(),
                 RegistryHandler.earth_ESSENCE.get(),
                 RegistryHandler.beast_ESSENCE.get(),
                 RegistryHandler.dark_ESSENCE.get(),
@@ -120,6 +127,10 @@ public class CyanWarriorSwordsReduxMod
 
     }
 
+    private void doClientStuff(final FMLClientSetupEvent event) {
+
+        MenuScreens.register(ModMenus.TRANSMUTATION.get(), TransmutationFurnaceScreen::new);
+    }
 
     public static ResourceLocation rl(String name)
     {
@@ -130,18 +141,18 @@ public class CyanWarriorSwordsReduxMod
     public void gatherData(GatherDataEvent event){
         DataGenerator gen = event.getGenerator();
 
-        gen.addProvider(new CyanWarriorSwordsRecipeProvider(gen));
-        gen.addProvider(new GeneratorBaseRecipes(gen));
+        gen.addProvider(new CyanWarriorSwordsRecipesProvider(gen));
         gen.addProvider(new ModLootModifierProvider(gen));
     }
 
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        ScreenManager.register(ModMenus.TRANSMUTATION.get(), TransmutationFurnaceScreen::new);
-    }
 
 
 
-    public static final ItemGroup TAB = new ItemGroup("cwsrtab") {
+    public static final CreativeModeTab TAB = new CreativeModeTab("cwsr") {
+
+
+
+
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(RegistryHandler.cyan_SWORD.get());

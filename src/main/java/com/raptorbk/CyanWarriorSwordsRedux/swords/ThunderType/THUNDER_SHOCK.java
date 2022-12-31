@@ -6,40 +6,45 @@ import com.raptorbk.CyanWarriorSwordsRedux.config.SwordConfig;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModTrigger;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+
+import net.minecraft.world.entity.player.Player;
+
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
+
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class THUNDER_SHOCK extends SWORD_CWSR {
-    private static IItemTier iItemTier = new IItemTier() {
+    private static Tier iItemTier = new Tier() {
         private Item repairItem;
         @Override
         public int getUses() {
@@ -81,26 +86,26 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
         this.damagePU=SwordConfig.THUNDER_SHOCK_SWORD_USE_COST.get();
     }
 
-    public static void callEffect(SurroundEffect seffect, World world, PlayerEntity entity, Hand handIn, Block blk){
+    public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){
         seffect.execute(world,entity,handIn,blk);
     }
 
-    public static BlockRayTraceResult raytraceFromEntity(Entity e, double distance, boolean fluids) {
-        Vector3d Vector3d = e.getEyePosition(1);
-        Vector3d Vector3d1 = e.getViewVector(1);
-        Vector3d Vector3d2 = Vector3d.add(Vector3d1.x * distance, Vector3d1.y * distance, Vector3d1.z * distance);
-        return e.level.clip(new RayTraceContext(Vector3d, Vector3d2, RayTraceContext.BlockMode.OUTLINE, fluids ? RayTraceContext.FluidMode.ANY : RayTraceContext.FluidMode.NONE, e));
+    public static BlockHitResult raytraceFromEntity(Entity e, double distance, boolean fluids) {
+        Vec3 Vec3 = e.getEyePosition(1);
+        Vec3 Vec31 = e.getViewVector(1);
+        Vec3 Vec32 = Vec3.add(Vec31.x * distance, Vec31.y * distance, Vec31.z * distance);
+        return e.level.clip(new ClipContext(Vec3, Vec32, ClipContext.Block.OUTLINE, fluids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, e));
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.cwsr.thunder_shock"));
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("tooltip.cwsr.thunder_shock"));
     }
 
     @Override
-    public ActionResult<ItemStack> eventRC(World world, PlayerEntity entity, Hand handIn, ItemStack OffHandItem) {
+    public InteractionResultHolder<ItemStack> eventRC(Level world, Player entity, InteractionHand handIn, ItemStack OffHandItem) {
         int radius=8;
-        AxisAlignedBB bb = new AxisAlignedBB(entity.getX()-radius, entity.getY()-radius, entity.getZ()-radius, entity.getX()+radius, entity.getY()+radius, entity.getZ()+radius);
+        AABB bb = new AABB(entity.getX()-radius, entity.getY()-radius, entity.getZ()-radius, entity.getX()+radius, entity.getY()+radius, entity.getZ()+radius);
         List<Entity> e = world.getEntities(entity, bb);
 
 
@@ -108,7 +113,7 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
             int entCountValid=0;
             for (int i = 0; i <= e.size() - 1; i++) {
                 Entity em = e.get(i);
-                if (em instanceof LivingEntity && !(em instanceof ArmorStandEntity)){
+                if (em instanceof LivingEntity && !(em instanceof ArmorStand)){
                     entCountValid=entCountValid+1;
                 }
 
@@ -121,36 +126,36 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
                     float f = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                     float f1 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                     float f2 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
-                    double d1 = MathHelper.lerp(d0, entity.xo, entity.getX()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
-                    double d2 = MathHelper.lerp(d0, entity.yo, entity.getY()) + entity.getRandom().nextDouble() * (double)entity.getBbHeight();
-                    double d3 = MathHelper.lerp(d0, entity.zo, entity.getZ()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
+                    double d1 = Mth.lerp(d0, entity.xo, entity.getX()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
+                    double d2 = Mth.lerp(d0, entity.yo, entity.getY()) + entity.getRandom().nextDouble() * (double)entity.getBbHeight();
+                    double d3 = Mth.lerp(d0, entity.zo, entity.getZ()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
                     world.addParticle(ParticleTypes.ANGRY_VILLAGER, d1, d2, d3, (double)f, (double)f1, (double)f2);
                 }
             }
         }
-        if(!(world instanceof ServerWorld)) return new ActionResult<>(ActionResultType.PASS, entity.getItemInHand(handIn));
+        if(!(world instanceof ServerLevel)) return new InteractionResultHolder<>(InteractionResult.PASS, entity.getItemInHand(handIn));
 
         ItemStack currentSword = entity.getItemInHand(handIn);
 
 
-        ServerWorld worldSV = (ServerWorld) world;
+        ServerLevel worldSV = (ServerLevel) world;
 
 
-        entity.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE,50,4));
-        LightningBoltEntity entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
+        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,50,4));
+        LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt.moveTo(entity.getX(), entity.getY(), entity.getZ()-1);
 
 
 
-        LightningBoltEntity entityBolt2 = EntityType.LIGHTNING_BOLT.create(worldSV);
+        LightningBolt entityBolt2 = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt2.moveTo(entity.getX(), entity.getY(), entity.getZ()+1);
 
 
-        LightningBoltEntity entityBolt3 = EntityType.LIGHTNING_BOLT.create(worldSV);
+        LightningBolt entityBolt3 = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt3.moveTo(entity.getX()+1, entity.getY(), entity.getZ());
 
 
-        LightningBoltEntity entityBolt4 = EntityType.LIGHTNING_BOLT.create(worldSV);
+        LightningBolt entityBolt4 = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt4.moveTo(entity.getX()-1, entity.getY(), entity.getZ());
 
         worldSV.addFreshEntity(entityBolt);
@@ -159,8 +164,8 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
         worldSV.addFreshEntity(entityBolt4);
         for (int i = 0; i <= e.size() - 1; i++) {
             Entity em = e.get(i);
-            if (em instanceof LivingEntity && !(em instanceof ArmorStandEntity)){
-                LightningBoltEntity entityBolt5 = EntityType.LIGHTNING_BOLT.create(worldSV);
+            if (em instanceof LivingEntity && !(em instanceof ArmorStand)){
+                LightningBolt entityBolt5 = EntityType.LIGHTNING_BOLT.create(worldSV);
                 entityBolt5.moveTo(em.getX(), em.getY(), em.getZ());
                 worldSV.addFreshEntity(entityBolt5);
             }
@@ -168,8 +173,8 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
         }
 
 
-        entity.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE,150,0));
-        return new ActionResult<>(ActionResultType.SUCCESS, currentSword);
+        entity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE,150,0));
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, currentSword);
     }
 
     @Override
@@ -177,14 +182,14 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
         this.swordCD=SwordConfig.THUNDER_SHOCK_SWORD_COOLDOWN.get();
     }
 
-    public ActionResult<ItemStack> use(World world, PlayerEntity entity, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {
         ItemStack currentSword = entity.getItemInHand(handIn);
         ItemStack ActiveSynergyTotemStack = new ItemStack(RegistryHandler.active_synergy_TOTEM.get(),1);
 
-        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.inventory.contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
-currentSword.hurtAndBreak(SwordConfig.THUNDER_SHOCK_SWORD_USE_COST.get(), entity,playerEntity -> {
+        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.getInventory().contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
+currentSword.hurtAndBreak(SwordConfig.THUNDER_SHOCK_SWORD_USE_COST.get(), entity,Player -> {
                 unlockDestroyACH(entity,world);
-                playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+                Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
 
@@ -192,49 +197,49 @@ currentSword.hurtAndBreak(SwordConfig.THUNDER_SHOCK_SWORD_USE_COST.get(), entity
     }
 
     @Override
-    public void unlockSEACH(PlayerEntity entity, World world) {
-        if(!(world instanceof ServerWorld)) return;
-        ServerPlayerEntity serverPlayerEntity= (ServerPlayerEntity) entity;
-        ModTrigger.Somethingelsetrigger.trigger(serverPlayerEntity);
-        ModTrigger.Themoretrigger.trigger(serverPlayerEntity);
+    public void unlockSEACH(Player entity, Level world) {
+        if(!(world instanceof ServerLevel)) return;
+        ServerPlayer serverPlayer= (ServerPlayer) entity;
+        ModTrigger.Somethingelsetrigger.trigger(serverPlayer);
+        ModTrigger.Themoretrigger.trigger(serverPlayer);
     }
 
     @Override
-    public void onCraftedBy(ItemStack stack, World world, PlayerEntity entity) {
-        if(!(world instanceof ServerWorld)) return;
+    public void onCraftedBy(ItemStack stack, Level world, Player entity) {
+        if(!(world instanceof ServerLevel)) return;
         unlockSEACH(entity,world);
-        ServerWorld worldSV = (ServerWorld) world;
-        LightningBoltEntity entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
+        ServerLevel worldSV = (ServerLevel) world;
+        LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt.moveTo(entity.getX(), entity.getY()+5, entity.getZ());
         worldSV.addFreshEntity(entityBolt);
-        world.playSound((PlayerEntity) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(new Random(),0.0F,1.0F) * 0.4F + 0.8F));
     }
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker){
-        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker, playerEntity -> {
-            if(attacker instanceof PlayerEntity){
-                unlockDestroyACH((PlayerEntity) attacker,attacker.getCommandSenderWorld());
+        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker, Player -> {
+            if(attacker instanceof Player){
+                unlockDestroyACH((Player) attacker,attacker.getCommandSenderWorld());
             }
-            playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+            Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
         return true;
     }
 
-    public void addEffectsTick(PlayerEntity playerIn){
-        playerIn.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED,10,4));
+    public void addEffectsTick(Player playerIn){
+        playerIn.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,10,4));
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if(isSelected && !worldIn.isClientSide){
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
                 addEffectsTick(playerIn);
             }
         }else{
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
                 if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.thunder_SHOCK.getId())){

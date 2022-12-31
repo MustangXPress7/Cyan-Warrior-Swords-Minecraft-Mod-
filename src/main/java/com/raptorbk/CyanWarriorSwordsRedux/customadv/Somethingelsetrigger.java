@@ -2,14 +2,16 @@ package com.raptorbk.CyanWarriorSwordsRedux.customadv;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.criterion.AbstractCriterionTrigger;
-import net.minecraft.advancements.criterion.CriterionInstance;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.loot.ConditionArrayParser;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 
-public class Somethingelsetrigger extends AbstractCriterionTrigger<Somethingelsetrigger.Instance> {
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+
+
+public class Somethingelsetrigger extends SimpleCriterionTrigger<Somethingelsetrigger.Instance> {
     private static final ResourceLocation ID = new ResourceLocation("cwsr","something_else_trigger");
 
     @Override
@@ -18,18 +20,18 @@ public class Somethingelsetrigger extends AbstractCriterionTrigger<Somethingelse
     }
 
     @Override
-    protected Somethingelsetrigger.Instance createInstance(JsonObject json, EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser conditionsParser) {
+    protected Somethingelsetrigger.Instance createInstance(JsonObject json, EntityPredicate.Composite entityPredicate, DeserializationContext conditionsParser) {
         return new Somethingelsetrigger.Instance(entityPredicate);
     }
 
-    public void trigger(ServerPlayerEntity entity) {
+    public void trigger(ServerPlayer entity) {
         this.trigger(entity, (instance) -> {
             return instance.test();
         });
     }
 
-    public static class Instance extends CriterionInstance {
-        public Instance(EntityPredicate.AndPredicate player) {
+    public static class Instance extends AbstractCriterionTriggerInstance {
+        public Instance(EntityPredicate.Composite player) {
             super(Somethingelsetrigger.ID, player);
         }
 

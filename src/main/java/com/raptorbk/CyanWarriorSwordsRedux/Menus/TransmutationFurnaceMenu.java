@@ -1,23 +1,21 @@
 package com.raptorbk.CyanWarriorSwordsRedux.Menus;
 
-import com.raptorbk.CyanWarriorSwordsRedux.recipes.CustomIRecipeType;
-import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipesType;
+import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipeType;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModMenus;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.container.AbstractFurnaceContainer;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.item.crafting.RecipeBookCategory;
-import net.minecraft.util.IIntArray;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractFurnaceMenu;
+import net.minecraft.world.inventory.ContainerData;
+import com.raptorbk.CyanWarriorSwordsRedux.recipes.recipeInit;
+import net.minecraft.world.inventory.RecipeBookType;
 
-public class TransmutationFurnaceMenu extends AbstractFurnaceContainer{
-    public TransmutationFurnaceMenu(int windowId, PlayerInventory playerInv) {
-        super(ModMenus.TRANSMUTATION.get(), CyanWarriorSwordsRecipesType.TRANSMUTATION, RecipeBookCategory.BLAST_FURNACE, windowId, playerInv);
+public class TransmutationFurnaceMenu extends AbstractFurnaceMenu {
+
+    public TransmutationFurnaceMenu(int windowId, Inventory playerInv){
+        super(ModMenus.TRANSMUTATION.get(), CyanWarriorSwordsRecipeType.TRANSMUTATION, RecipeBookType.BLAST_FURNACE,windowId,playerInv);
     }
 
-
-    public TransmutationFurnaceMenu(int windowId, PlayerInventory playerInv, IInventory tile, IIntArray dataSlots) {
-        super(ModMenus.TRANSMUTATION.get(), CyanWarriorSwordsRecipesType.TRANSMUTATION, RecipeBookCategory.BLAST_FURNACE, windowId, playerInv, tile, dataSlots);
+    public TransmutationFurnaceMenu(int windowId, Inventory playerInv, Container tile, ContainerData dataSlots) {
+        super(ModMenus.TRANSMUTATION.get(), CyanWarriorSwordsRecipeType.TRANSMUTATION, RecipeBookType.BLAST_FURNACE, windowId, playerInv, tile, dataSlots);
     }
 }

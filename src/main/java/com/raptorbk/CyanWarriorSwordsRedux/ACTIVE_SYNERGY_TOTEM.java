@@ -1,18 +1,20 @@
 package com.raptorbk.CyanWarriorSwordsRedux;
 
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -24,7 +26,7 @@ public class ACTIVE_SYNERGY_TOTEM extends Item {
     }
 
 
-    public ActionResult<ItemStack> use(World world, PlayerEntity entity, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {
         ItemStack x=entity.getItemInHand(handIn);
         Map<Enchantment, Integer> xEnc= EnchantmentHelper.getEnchantments(x);
 
@@ -32,12 +34,12 @@ public class ACTIVE_SYNERGY_TOTEM extends Item {
             if(xEnc.containsKey(RegistryHandler.inh_ENCHANTMENT.get())){
                 xEnc.remove(RegistryHandler.inh_ENCHANTMENT.get());
                 EnchantmentHelper.setEnchantments(xEnc,x);
-                ITextComponent chatMessage=new TranslationTextComponent("chat.cwsr.usage.deactivation.inh");
+                Component chatMessage=new TranslatableComponent("chat.cwsr.usage.deactivation.inh");
                 if(!world.isClientSide()) {
                     entity.sendMessage(chatMessage,entity.getUUID());
                 }
             }else{
-                ITextComponent chatMessage=new TranslationTextComponent("chat.cwsr.usage.activation.inh");
+                Component chatMessage=new TranslatableComponent("chat.cwsr.usage.activation.inh");
                 if(!world.isClientSide()) {
                     entity.sendMessage(chatMessage,entity.getUUID());
                 }
@@ -45,7 +47,7 @@ public class ACTIVE_SYNERGY_TOTEM extends Item {
             }
 
             entity.getCooldowns().addCooldown(x.getItem(), 40);
-            return new ActionResult<>(ActionResultType.SUCCESS, x);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, x);
         }
 
         ItemStack totemStack = new ItemStack(RegistryHandler.synergy_TOTEM.get(),1);
@@ -53,15 +55,19 @@ public class ACTIVE_SYNERGY_TOTEM extends Item {
             totemStack.enchant(RegistryHandler.inh_ENCHANTMENT.get(),1);
         }
 
-        ITextComponent chatMessage=new TranslationTextComponent("chat.cwsr.usage.deactivation.dw");
+        Component chatMessage=new TranslatableComponent("chat.cwsr.usage.deactivation.dw");
         if(!world.isClientSide()) {
             entity.sendMessage(chatMessage,entity.getUUID());
         }
-        return new ActionResult<>(ActionResultType.SUCCESS, totemStack);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, totemStack);
     }
 
+
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.cwsr.synergy"));
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("tooltip.cwsr.synergy"));
     }
+
+
+
 }

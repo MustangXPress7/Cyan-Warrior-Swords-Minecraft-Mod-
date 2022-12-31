@@ -7,29 +7,30 @@ import com.raptorbk.CyanWarriorSwordsRedux.config.SwordConfig;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModTrigger;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.item.EnderPearlEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.projectile.ThrownEnderpearl;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+
+import net.minecraft.world.entity.player.Player;
+
+import net.minecraft.world.item.crafting.Ingredient;
+
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -37,7 +38,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class ENDER_THUNDER extends ENDER_CLASS_SWORD {
-    private static IItemTier iItemTier = new IItemTier() {
+    private static Tier iItemTier = new Tier() {
         private Item repairItem;
         @Override
         public int getUses() {
@@ -74,7 +75,7 @@ public class ENDER_THUNDER extends ENDER_CLASS_SWORD {
         super(iItemTier, SwordConfig.ENDER_THUNDER_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
     }
 
-    public static void callEffect(SurroundEffect seffect, World world, PlayerEntity entity, Hand handIn, Block blk){
+    public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){
         seffect.execute(world,entity,handIn,blk);
     }
 
@@ -84,35 +85,35 @@ public class ENDER_THUNDER extends ENDER_CLASS_SWORD {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.cwsr.ender_thunder"));
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("tooltip.cwsr.ender_thunder"));
     }
 
     @Override
-    public ActionResult<ItemStack> eventRC(World world, PlayerEntity entity, Hand handIn, ItemStack OffHandItem) {
-        if(!(world instanceof ServerWorld)) return new ActionResult<>(ActionResultType.PASS, entity.getItemInHand(handIn));
+    public InteractionResultHolder<ItemStack> eventRC(Level world, Player entity, InteractionHand handIn, ItemStack OffHandItem) {
+        if(!(world instanceof ServerLevel)) return new InteractionResultHolder<>(InteractionResult.PASS, entity.getItemInHand(handIn));
 
 
 
 
 
-        ServerWorld worldSV = (ServerWorld) world;
+        ServerLevel worldSV = (ServerLevel) world;
 
 
-        LightningBoltEntity entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
+        LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt.moveTo(entity.getX()+5, entity.getY(), entity.getZ()-1);
 
 
 
-        LightningBoltEntity entityBolt2 = EntityType.LIGHTNING_BOLT.create(worldSV);
+        LightningBolt entityBolt2 = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt2.moveTo(entity.getX()+5, entity.getY(), entity.getZ()-1);
 
 
-        LightningBoltEntity entityBolt3 = EntityType.LIGHTNING_BOLT.create(worldSV);
+        LightningBolt entityBolt3 = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt3.moveTo(entity.getX()-5, entity.getY(), entity.getZ()+1);
 
 
-        LightningBoltEntity entityBolt4 = EntityType.LIGHTNING_BOLT.create(worldSV);
+        LightningBolt entityBolt4 = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt4.moveTo(entity.getX()-5, entity.getY(), entity.getZ()-3);
 
         worldSV.addFreshEntity(entityBolt);
@@ -121,7 +122,7 @@ public class ENDER_THUNDER extends ENDER_CLASS_SWORD {
         worldSV.addFreshEntity(entityBolt4);
 
 
-        entity.addEffect(new EffectInstance(Effects.REGENERATION,120,3));
+        entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION,120,3));
 
         ItemStack ogSword = entity.getItemInHand(handIn);
 
@@ -129,13 +130,13 @@ public class ENDER_THUNDER extends ENDER_CLASS_SWORD {
 
 
         ItemStack itemstack = new ItemStack(Items.ENDER_PEARL);
-        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(new Random(),0.0F,1.0F) * 0.4F + 0.8F));
         if (!world.isClientSide) {
-            EnderPearlEntity enderpearlentity = new EnderPearlEntity(world, entity);
+            ThrownEnderpearl enderpearlentity = new ThrownEnderpearl(world, entity);
             enderpearlentity.setItem(itemstack);
-            enderpearlentity.shootFromRotation(entity, entity.xRot, entity.yRot, 0.0F, 1.5F, 1.0F);
+            enderpearlentity.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0.0F, 1.5F, 1.0F);
             ItemStack x = new ItemStack(RegistryHandler.active_synergy_TOTEM.get(),1);
-            if(entity.inventory.contains(x)){
+            if(entity.getInventory().contains(x)){
                 if(entity.getOffhandItem().getItem() instanceof ENDER_CLASS_SWORD && entity.getMainHandItem().getItem() instanceof ENDER_CLASS_SWORD){
                     if(entity.getOffhandItem().getItem() instanceof ENDER_THUNDER){
                         world.addFreshEntity(enderpearlentity);
@@ -154,7 +155,7 @@ public class ENDER_THUNDER extends ENDER_CLASS_SWORD {
         }
 
         entity.awardStat(Stats.ITEM_USED.get(this));
-        if (!entity.abilities.instabuild) {
+        if (!entity.getAbilities().instabuild) {
             itemstack.shrink(0);
         }
 
@@ -164,10 +165,10 @@ public class ENDER_THUNDER extends ENDER_CLASS_SWORD {
         int game = r.nextInt(100);
 
         if(game < 95){
-            return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
         }else{
-            entity.addEffect(new EffectInstance(Effects.CONFUSION,160,1));
-            return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
+            entity.addEffect(new MobEffectInstance(MobEffects.CONFUSION,160,1));
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
         }
     }
 
@@ -177,44 +178,44 @@ public class ENDER_THUNDER extends ENDER_CLASS_SWORD {
         this.swordCD=SwordConfig.ENDER_THUNDER_COOLDOWN.get();
     }
 
-    public ActionResult<ItemStack> use(World world, PlayerEntity entity, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {
         ItemStack ogSword = entity.getItemInHand(handIn);
         ItemStack ActiveSynergyTotemStack = new ItemStack(RegistryHandler.active_synergy_TOTEM.get(),1);
 
-        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.inventory.contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
-ogSword.hurtAndBreak(SwordConfig.ENDER_THUNDER_USE_COST.get(),entity,playerEntity -> {
+        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.getInventory().contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
+ogSword.hurtAndBreak(SwordConfig.ENDER_THUNDER_USE_COST.get(),entity,Player -> {
                 unlockDestroyACH(entity,world);
-                playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+                Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
 
         return callerRC(world,entity,handIn,RegistryHandler.ender_THUNDER.getId(), SwordConfig.ENDER_THUNDER_COOLDOWN.get());
     }
 
-    public void addEffectsTick(PlayerEntity playerIn){
-        playerIn.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED,10,2));
+    public void addEffectsTick(Player playerIn){
+        playerIn.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,10,2));
     }
 
 
     @Override
-    public void unlockSEACH(PlayerEntity entity, World world) {
-        if(!(world instanceof ServerWorld)) return;
-        ServerPlayerEntity serverPlayerEntity= (ServerPlayerEntity) entity;
-        ModTrigger.Somethingelsetrigger.trigger(serverPlayerEntity);
-        ModTrigger.Bestbothtrigger.trigger(serverPlayerEntity);
+    public void unlockSEACH(Player entity, Level world) {
+        if(!(world instanceof ServerLevel)) return;
+        ServerPlayer serverPlayer= (ServerPlayer) entity;
+        ModTrigger.Somethingelsetrigger.trigger(serverPlayer);
+        ModTrigger.Bestbothtrigger.trigger(serverPlayer);
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         this.throwEnderPearlEvent(entityIn,worldIn, stack);
         if(isSelected && !worldIn.isClientSide){
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
                 addEffectsTick(playerIn);
             }
         }else{
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
                 if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.ender_THUNDER.getId())){
@@ -226,11 +227,11 @@ ogSword.hurtAndBreak(SwordConfig.ENDER_THUNDER_USE_COST.get(),entity,playerEntit
     }
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker){
-        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,playerEntity -> {
-            if(attacker instanceof PlayerEntity){
-                unlockDestroyACH((PlayerEntity) attacker,attacker.getCommandSenderWorld());
+        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,Player -> {
+            if(attacker instanceof Player){
+                unlockDestroyACH((Player) attacker,attacker.getCommandSenderWorld());
             }
-            playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+            Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
         return true;
     }

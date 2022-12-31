@@ -24,13 +24,13 @@ import com.raptorbk.CyanWarriorSwordsRedux.swords.WaterType.ICE_SWORD;
 import com.raptorbk.CyanWarriorSwordsRedux.swords.WaterType.WATER_SWORD;
 import com.raptorbk.CyanWarriorSwordsRedux.swords.WindType.WIND_IMPULSE;
 import com.raptorbk.CyanWarriorSwordsRedux.swords.WindType.WIND_SWORD;
-import net.minecraft.block.Block;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.Item;
-import net.minecraft.item.SwordItem;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -39,6 +39,7 @@ public class RegistryHandler {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CyanWarriorSwordsReduxMod.MOD_ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CyanWarriorSwordsReduxMod.MOD_ID);
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, CyanWarriorSwordsReduxMod.MOD_ID);
+
     public static void init() {
 
         IEventBus MOD_EVENT_BUS;
@@ -78,7 +79,6 @@ public class RegistryHandler {
     public static final RegistryObject<Item> active_synergy_TOTEM = ITEMS.register("active_synergy_totem", ACTIVE_SYNERGY_TOTEM::new);
 
     public static final RegistryObject<Item> ability_TOTEM = ITEMS.register("ability_totem", ABILITY_TOTEM::new);
-
 
     //ENCHANTMENTS
 

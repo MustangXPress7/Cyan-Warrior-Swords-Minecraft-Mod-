@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "cwsr:tri_ender"
+            "items": [
+              "cwsr:tri_ender"
+            ]
           }
         ]
       }
@@ -31,7 +33,9 @@
       "conditions": {
         "items": [
           {
-            "item": "cwsr:atlantis_sword"
+            "items": [
+              "cwsr:atlantis_sword"
+            ]
           }
         ]
       }

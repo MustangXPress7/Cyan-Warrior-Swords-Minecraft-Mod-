@@ -3,13 +3,14 @@ package com.raptorbk.CyanWarriorSwordsRedux.events.loot.lootcondition;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.minecraft.loot.LootConditionType;
-import net.minecraft.loot.LootContext;
-import net.minecraft.loot.conditions.ILootCondition;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
-public class FromLootTable implements ILootCondition {
+public class FromLootTable implements LootItemCondition {
 
     private ResourceLocation table;
 
@@ -23,19 +24,20 @@ public class FromLootTable implements ILootCondition {
     }
 
     @Override
-    public LootConditionType getType() {
+    public LootItemConditionType getType() {
         return LootConditions.FROM_LOOT_TABLE;
     }
 
-    public static class Serializer implements net.minecraft.loot.ILootSerializer<FromLootTable> {
+    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<FromLootTable> {
         public void serialize(JsonObject json, FromLootTable instance, JsonSerializationContext context) {
             json.addProperty("loot_table", instance.table.toString());
         }
 
         public FromLootTable deserialize(JsonObject json, JsonDeserializationContext context) {
-            ResourceLocation table = new ResourceLocation(JSONUtils.getAsString(json, "loot_table"));
+            ResourceLocation table = new ResourceLocation(GsonHelper.getAsString(json, "loot_table"));
             return new FromLootTable(table);
         }
     }
 
 }
+

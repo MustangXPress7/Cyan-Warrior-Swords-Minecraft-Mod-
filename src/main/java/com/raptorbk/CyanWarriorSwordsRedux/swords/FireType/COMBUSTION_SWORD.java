@@ -7,39 +7,49 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.ExecuteSeffect;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModTrigger;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ArmorStandEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+
+import net.minecraft.world.entity.Entity;
+
+import net.minecraft.world.entity.player.Player;
+
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.phys.AABB;
+
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class COMBUSTION_SWORD extends SWORD_CWSR {
-    private static IItemTier iItemTier = new IItemTier() {
+    private static Tier iItemTier = new Tier() {
         private Item repairItem;
         @Override
         public int getUses() {
@@ -76,7 +86,7 @@ public class COMBUSTION_SWORD extends SWORD_CWSR {
         super(iItemTier, SwordConfig.COMBUSTION_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
     }
 
-    public static void callEffect(SurroundEffect seffect, World world, PlayerEntity entity, Hand handIn, Block blk){
+    public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){
         seffect.execute(world,entity,handIn,blk);
     }
 
@@ -86,17 +96,17 @@ public class COMBUSTION_SWORD extends SWORD_CWSR {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.cwsr.combustion_sword"));
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("tooltip.cwsr.combustion_sword"));
     }
 
 
     @Override
-    public ActionResult<ItemStack> eventRC(World world, PlayerEntity entity, Hand handIn, ItemStack OffHandItem) {
+    public InteractionResultHolder<ItemStack> eventRC(Level world, Player entity, InteractionHand handIn, ItemStack OffHandItem) {
 
 
         int radius=8;
-        AxisAlignedBB bb = new AxisAlignedBB(entity.getX()-radius, entity.getY()-radius, entity.getZ()-radius, entity.getX()+radius, entity.getY()+radius, entity.getZ()+radius);
+        AABB bb = new AABB(entity.getX()-radius, entity.getY()-radius, entity.getZ()-radius, entity.getX()+radius, entity.getY()+radius, entity.getZ()+radius);
         List<Entity> e = world.getEntities(entity, bb);
 
 
@@ -104,7 +114,7 @@ public class COMBUSTION_SWORD extends SWORD_CWSR {
             int entCountValid=0;
             for (int i = 0; i <= e.size() - 1; i++) {
                 Entity em = e.get(i);
-                if (em instanceof LivingEntity && !(em instanceof ArmorStandEntity)){
+                if (em instanceof LivingEntity && !(em instanceof ArmorStand)){
                     entCountValid=entCountValid+1;
                 }
 
@@ -117,15 +127,15 @@ public class COMBUSTION_SWORD extends SWORD_CWSR {
                     float f = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                     float f1 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                     float f2 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
-                    double d1 = MathHelper.lerp(d0, entity.xo, entity.getX()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
-                    double d2 = MathHelper.lerp(d0, entity.yo, entity.getY()) + entity.getRandom().nextDouble() * (double)entity.getBbHeight();
-                    double d3 = MathHelper.lerp(d0, entity.zo, entity.getZ()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
+                    double d1 = Mth.lerp(d0, entity.xo, entity.getX()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
+                    double d2 = Mth.lerp(d0, entity.yo, entity.getY()) + entity.getRandom().nextDouble() * (double)entity.getBbHeight();
+                    double d3 = Mth.lerp(d0, entity.zo, entity.getZ()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
                     world.addParticle(ParticleTypes.ANGRY_VILLAGER, d1, d2, d3, (double)f, (double)f1, (double)f2);
                 }
             }
         }
 
-        if(!(world instanceof ServerWorld)) return new ActionResult<>(ActionResultType.PASS, entity.getItemInHand(handIn));
+        if(!(world instanceof ServerLevel)) return new InteractionResultHolder<>(InteractionResult.PASS, entity.getItemInHand(handIn));
 
         ItemStack currentSword = entity.getItemInHand(handIn);
 
@@ -133,7 +143,7 @@ public class COMBUSTION_SWORD extends SWORD_CWSR {
         callEffect(new ExecuteSeffect(), world,entity,handIn, Blocks.FIRE);
         for (int i = 0; i <= e.size() - 1; i++) {
             Entity em = e.get(i);
-            if (em instanceof LivingEntity && !(em instanceof ArmorStandEntity)){
+            if (em instanceof LivingEntity && !(em instanceof ArmorStand)){
                 BlockPos posTarget = new BlockPos(em.getX(), em.getY(), em.getZ());
                 world.setBlock(posTarget, Blocks.FIRE.defaultBlockState(),1);
             }
@@ -142,15 +152,15 @@ public class COMBUSTION_SWORD extends SWORD_CWSR {
 
 
 
-        return new ActionResult<>(ActionResultType.SUCCESS, currentSword);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, currentSword);
     }
 
     @Override
-    public void unlockSEACH(PlayerEntity entity, World world) {
-        if(!(world instanceof ServerWorld)) return;
-        ServerPlayerEntity serverPlayerEntity= (ServerPlayerEntity) entity;
-        ModTrigger.Somethingelsetrigger.trigger(serverPlayerEntity);
-        ModTrigger.Themoretrigger.trigger(serverPlayerEntity);
+    public void unlockSEACH(Player entity, Level world) {
+        if(!(world instanceof ServerLevel)) return;
+        ServerPlayer serverPlayer= (ServerPlayer) entity;
+        ModTrigger.Somethingelsetrigger.trigger(serverPlayer);
+        ModTrigger.Themoretrigger.trigger(serverPlayer);
     }
 
     @Override
@@ -158,14 +168,14 @@ public class COMBUSTION_SWORD extends SWORD_CWSR {
         this.swordCD=SwordConfig.COMBUSTION_SWORD_COOLDOWN.get();
     }
 
-    public ActionResult<ItemStack> use(World world, PlayerEntity entity, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {
         ItemStack currentSword = entity.getItemInHand(handIn);
         ItemStack ActiveSynergyTotemStack = new ItemStack(RegistryHandler.active_synergy_TOTEM.get(),1);
 
-        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.inventory.contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
-currentSword.hurtAndBreak(SwordConfig.COMBUSTION_SWORD_USE_COST.get(),entity,playerEntity -> {
+        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.getInventory().contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
+currentSword.hurtAndBreak(SwordConfig.COMBUSTION_SWORD_USE_COST.get(),entity,Player -> {
                 unlockDestroyACH(entity,world);
-                playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+                Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
 
@@ -175,37 +185,36 @@ currentSword.hurtAndBreak(SwordConfig.COMBUSTION_SWORD_USE_COST.get(),entity,pla
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker){
         target.setSecondsOnFire(SwordConfig.COMBUSTION_SWORD_HIT_SEC.get());
-        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,playerEntity -> {
-            if(attacker instanceof PlayerEntity){
-                unlockDestroyACH((PlayerEntity) attacker,attacker.getCommandSenderWorld());
+        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,Player -> {
+            if(attacker instanceof Player){
+                unlockDestroyACH((Player) attacker,attacker.getCommandSenderWorld());
             }
-            playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+            Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
         return true;
     }
 
     @Override
-    public void onCraftedBy(ItemStack stack, World world, PlayerEntity entity) {
+    public void onCraftedBy(ItemStack stack, Level world, Player entity) {
         unlockSEACH(entity,world);
-        world.playSound((PlayerEntity) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIRECHARGE_USE, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
-        stack.enchant(Enchantments.FIRE_ASPECT,2);
-        world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),1.0F, Explosion.Mode.NONE);
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(new Random(),0.0F,1.0F) * 0.4F + 0.8F));
+        //world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),1.0F, Explosion.BlockInteraction.NONE);
     }
 
-    public void addEffectsTick(PlayerEntity playerIn){
-        playerIn.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE,10,1));
+    public void addEffectsTick(Player playerIn){
+        playerIn.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE,10,1));
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if(isSelected && !worldIn.isClientSide){
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
                 addEffectsTick(playerIn);
             }
         }else{
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
                 if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.combustion_SWORD.getId())){

@@ -4,28 +4,35 @@ import com.raptorbk.CyanWarriorSwordsRedux.CyanWarriorSwordsReduxMod;
 import com.raptorbk.CyanWarriorSwordsRedux.SWORD_CWSR;
 import com.raptorbk.CyanWarriorSwordsRedux.config.SwordConfig;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.*;
-import net.minecraft.util.math.vector.Vector3d;;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.player.Player;
+
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class BEAST_SWORD extends SWORD_CWSR {
-    private static IItemTier iItemTier = new IItemTier() {
+    private static Tier iItemTier = new Tier() {
         private Item repairItem;
         
         
@@ -63,25 +70,20 @@ public class BEAST_SWORD extends SWORD_CWSR {
     public BEAST_SWORD() {
         super(iItemTier, SwordConfig.BEAST_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
     }
-
+    
     @Override
-    public ActionResult<ItemStack> eventRC(World world, PlayerEntity entity, Hand handIn, ItemStack OffHandItem) {
+    public InteractionResultHolder<ItemStack> eventRC(Level world, Player entity, InteractionHand handIn, ItemStack OffHandItem) {
 
         ItemStack currentSword = entity.getItemInHand(handIn);
 
-        Vector3d look = entity.getLookAngle();
-        WolfEntity wolfProjectile = new WolfEntity(EntityType.WOLF,world);
+        Vec3 look = entity.getLookAngle();
+        Wolf wolfProjectile = new Wolf(EntityType.WOLF,world);
         wolfProjectile.setPos(entity.getX(),entity.getY()+1,entity.getZ());
         wolfProjectile.setDeltaMovement(look.x,look.y,look.z);
         wolfProjectile.setTame(true);
         wolfProjectile.tame(entity);
         world.addFreshEntity(wolfProjectile);
-        return new ActionResult<>(ActionResultType.SUCCESS, currentSword);
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.cwsr.beast_sword"));
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, currentSword);
     }
 
 
@@ -97,17 +99,17 @@ public class BEAST_SWORD extends SWORD_CWSR {
 
 
 
-    public ActionResult<ItemStack> use(World world, PlayerEntity entity, Hand handIn) {
-        if(!(world instanceof ServerWorld)) return new ActionResult<>(ActionResultType.PASS, entity.getItemInHand(handIn));
+    public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {
+        if(!(world instanceof ServerLevel)) return new InteractionResultHolder<>(InteractionResult.PASS, entity.getItemInHand(handIn));
 
         ItemStack currentSword = entity.getItemInHand(handIn);
         ItemStack ActiveSynergyTotemStack = new ItemStack(RegistryHandler.active_synergy_TOTEM.get(),1);
 
 
-        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.inventory.contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
-currentSword.hurtAndBreak(SwordConfig.BEAST_SWORD_USE_COST.get(),entity,playerEntity -> {
+        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.getInventory().contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
+currentSword.hurtAndBreak(SwordConfig.BEAST_SWORD_USE_COST.get(),entity,Player -> {
                 unlockDestroyACH(entity,world);
-                playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+                Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
 
@@ -116,21 +118,28 @@ currentSword.hurtAndBreak(SwordConfig.BEAST_SWORD_USE_COST.get(),entity,playerEn
  
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker){
-        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,playerEntity -> {
-            if(attacker instanceof PlayerEntity){
-                unlockDestroyACH((PlayerEntity) attacker,attacker.getCommandSenderWorld());
+        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,Player -> {
+            if(attacker instanceof Player){
+                unlockDestroyACH((Player) attacker,attacker.getCommandSenderWorld());
             }
-            playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+            Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
         return true;
     }
 
 
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("tooltip.cwsr.beast_sword"));
+    }
+
+
+
 
     @Override
-    public void onCraftedBy(ItemStack stack, World world, PlayerEntity entity) {
+    public void onCraftedBy(ItemStack stack, Level world, Player entity) {
         unlockSEACH(entity,world);
-        world.playSound((PlayerEntity) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WOLF_HOWL, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WOLF_GROWL, SoundSource.NEUTRAL, 0.5F, 1.0f);
     }
 
 }

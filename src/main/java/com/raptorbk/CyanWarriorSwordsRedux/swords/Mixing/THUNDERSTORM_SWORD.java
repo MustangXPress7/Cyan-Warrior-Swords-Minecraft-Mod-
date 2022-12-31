@@ -6,36 +6,35 @@ import com.raptorbk.CyanWarriorSwordsRedux.config.SwordConfig;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModTrigger;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
-import net.minecraft.block.Block;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.effect.LightningBoltEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+
+import net.minecraft.world.entity.player.Player;
+
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
 public class THUNDERSTORM_SWORD extends SWORD_CWSR {
-    private static IItemTier iItemTier = new IItemTier() {
+    private static Tier iItemTier = new Tier() {
         private Item repairItem;
         @Override
         public int getUses() {
@@ -72,7 +71,7 @@ public class THUNDERSTORM_SWORD extends SWORD_CWSR {
         super(iItemTier, SwordConfig.THUNDERSTORM_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
     }
 
-    public static void callEffect(SurroundEffect seffect, World world, PlayerEntity entity, Hand handIn, Block blk){
+    public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){
         seffect.execute(world,entity,handIn,blk);
     }
 
@@ -82,43 +81,43 @@ public class THUNDERSTORM_SWORD extends SWORD_CWSR {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.cwsr.thunderstorm_sword"));
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("tooltip.cwsr.thunderstorm_sword"));
     }
 
     @Override
-    public ActionResult<ItemStack> eventRC(World world, PlayerEntity entity, Hand handIn, ItemStack OffHandItem) {
-        if(!(world instanceof ServerWorld)) return new ActionResult<>(ActionResultType.PASS, entity.getItemInHand(handIn));
+    public InteractionResultHolder<ItemStack> eventRC(Level world, Player entity, InteractionHand handIn, ItemStack OffHandItem) {
+        if(!(world instanceof ServerLevel)) return new InteractionResultHolder<>(InteractionResult.PASS, entity.getItemInHand(handIn));
         ItemStack currentSword = entity.getItemInHand(handIn);
 
 
 
-        ServerWorld worldSV = (ServerWorld) world;
+        ServerLevel worldSV = (ServerLevel) world;
 
         float var4 = 1.0F;
         int j = (int)(entity.yo + (entity.getY() - entity.yo) * (double)var4 + 1.62D - entity.getMyRidingOffset());
 
-        LightningBoltEntity entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
+        LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
         entityBolt.moveTo(entity.getX(), entity.getY(), entity.getZ());
         //Para tocar los valores de impulso, serían los últimos valores de "double motion" (en este caso, 10.5F)
         entity.fallDistance=0.0F;
-        double motionX = (double)(-MathHelper.sin(entity.yRot / 180.0F * (float)Math.PI) * MathHelper.cos(entity.xRot / 180.0F * (float)Math.PI) * 7F);
-        double motionZ = (double)(MathHelper.cos(entity.yRot / 180.0F * (float)Math.PI) * MathHelper.cos(entity.xRot / 180.0F * (float)Math.PI) * 7F);
-        double motionY = (double)(-MathHelper.sin((entity.xRot + 0F) / 180.0F * (float)Math.PI) * 0F);
-        //entity.push(((double)(-MathHelper.sin(entity.yRot * (float)Math.PI / 180.0F) * (float)j * 0.5F))/8F, 0.1D, ((double)(MathHelper.cos(entity.yRot * (float)Math.PI / 180.0F) * (float)j * 0.5F))/8F);
+        double motionX = (double)(-Mth.sin(entity.getYRot() / 180.0F * (float)Math.PI) * Mth.cos(entity.getXRot() / 180.0F * (float)Math.PI) * 7F);
+        double motionZ = (double)(Mth.cos(entity.getYRot() / 180.0F * (float)Math.PI) * Mth.cos(entity.getXRot() / 180.0F * (float)Math.PI) * 7F);
+        double motionY = (double)(-Mth.sin((entity.getXRot() + 0F) / 180.0F * (float)Math.PI) * 0F);
+        //entity.push(((double)(-Mth.sin(entity.getYRot() * (float)Math.PI / 180.0F) * (float)j * 0.5F))/8F, 0.1D, ((double)(Mth.cos(entity.getYRot() * (float)Math.PI / 180.0F) * (float)j * 0.5F))/8F);
         entity.push(motionX,motionY,motionZ);
         entity.hurtMarked=true;
 
 
-        entity.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE,180,0));
-        entity.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE,10,5));
+        entity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE,180,0));
+        entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,10,5));
         worldSV.addFreshEntity(entityBolt);
 
-        entity.addEffect(new EffectInstance(Effects.REGENERATION,80,3));
+        entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION,80,3));
         entity.fallDistance=0.0F;
 
 
-        return new ActionResult<>(ActionResultType.SUCCESS, currentSword);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, currentSword);
     }
 
     @Override
@@ -127,14 +126,14 @@ public class THUNDERSTORM_SWORD extends SWORD_CWSR {
     }
 
 
-    public ActionResult<ItemStack> use(World world, PlayerEntity entity, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {
         ItemStack currentSword = entity.getItemInHand(handIn);
         ItemStack ActiveSynergyTotemStack = new ItemStack(RegistryHandler.active_synergy_TOTEM.get(),1);
 
-        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.inventory.contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
-currentSword.hurtAndBreak(SwordConfig.THUNDERSTORM_SWORD_USE_COST.get(),entity,playerEntity -> {
+        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.getInventory().contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
+currentSword.hurtAndBreak(SwordConfig.THUNDERSTORM_SWORD_USE_COST.get(),entity,Player -> {
                 unlockDestroyACH(entity,world);
-                playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+                Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
 
@@ -144,52 +143,52 @@ currentSword.hurtAndBreak(SwordConfig.THUNDERSTORM_SWORD_USE_COST.get(),entity,p
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker){
         target.knockback(2,attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
-        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,playerEntity -> {
-            if(attacker instanceof PlayerEntity){
-                unlockDestroyACH((PlayerEntity) attacker,attacker.getCommandSenderWorld());
+        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,Player -> {
+            if(attacker instanceof Player){
+                unlockDestroyACH((Player) attacker,attacker.getCommandSenderWorld());
             }
-            playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);        });
+            Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);        });
         return true;
     }
 
     @Override
-    public void unlockSEACH(PlayerEntity entity, World world) {
-        if(!(world instanceof ServerWorld)) return;
-        ServerPlayerEntity serverPlayerEntity= (ServerPlayerEntity) entity;
-        ModTrigger.Somethingelsetrigger.trigger(serverPlayerEntity);
-        ModTrigger.Bestbothtrigger.trigger(serverPlayerEntity);
+    public void unlockSEACH(Player entity, Level world) {
+        if(!(world instanceof ServerLevel)) return;
+        ServerPlayer serverPlayer= (ServerPlayer) entity;
+        ModTrigger.Somethingelsetrigger.trigger(serverPlayer);
+        ModTrigger.Bestbothtrigger.trigger(serverPlayer);
     }
 
 
 
     @Override
-    public void onCraftedBy(ItemStack stack, World world, PlayerEntity entity) {
+    public void onCraftedBy(ItemStack stack, Level world, Player entity) {
         if(!world.isClientSide)
         {
             unlockSEACH(entity,world);
-            ServerWorld worldSV = (ServerWorld) world;
-            LightningBoltEntity entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
+            ServerLevel worldSV = (ServerLevel) world;
+            LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
             entityBolt.moveTo(entity.getX(), entity.getY(), entity.getZ());
             worldSV.addFreshEntity(entityBolt);
         }
     }
 
-    public void addEffectsTick(PlayerEntity playerIn){
-        playerIn.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED,10,4));
-        playerIn.addEffect(new EffectInstance(Effects.JUMP,10,4));
+    public void addEffectsTick(Player playerIn){
+        playerIn.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,10,4));
+        playerIn.addEffect(new MobEffectInstance(MobEffects.JUMP,10,4));
 
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if(isSelected && !worldIn.isClientSide){
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
                 addEffectsTick(playerIn);
             }
         }else{
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
                 if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.thunderstorm_SWORD.getId())){

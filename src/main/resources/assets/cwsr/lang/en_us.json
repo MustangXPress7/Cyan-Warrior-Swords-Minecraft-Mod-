@@ -1,5 +1,6 @@
 {
   "item.cwsr.beast_essence": "Beast Essence",
+  "itemGroup.cwsr": "Cyan Warrior Swords",
   "item.cwsr.earth_sword": "Earth Sword",
   "item.cwsr.peaceful_nature": "Peaceful Nature Sword",
   "item.cwsr.wild_nature": "Wild Nature Sword",
@@ -126,5 +127,5 @@
   "tooltip.cwsr.light_essence": "Essence: Purest form of light energy.",
   "tooltip.cwsr.mixed_essence": "Essence: Purest form of energy from all 9 life elements.",
   "tooltip.cwsr.corrupt_essence": "Essence: Empty and broken essence, produced by mistake in the Transmutation Furnace.",
-  "itemGroup.cwsrtab": "Cyan Warrior Swords"
+  "CreativeModeTab.cwsrTab": "Cyan Warrior Swords"
 }

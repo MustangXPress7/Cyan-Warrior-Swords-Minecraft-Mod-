@@ -1,10 +1,10 @@
 package com.raptorbk.CyanWarriorSwordsRedux;
 
 import com.google.common.collect.Ordering;
-import com.raptorbk.CyanWarriorSwordsRedux.blocks.testfurn.TransmutationFurnaceBlocks;
+import com.raptorbk.CyanWarriorSwordsRedux.blocks.transmutationfurnace.TransmutationFurnaceBlocks;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -60,7 +60,7 @@ public class SortedItemList
             RegistryHandler.synergy_TOTEM.get(),
             RegistryHandler.active_synergy_TOTEM.get(),
             RegistryHandler.sword_HANDLE.get(),
-            TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.asItem()
+            TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.get().asItem()
             );
 
     public static Comparator<ItemStack> tabSorter = Ordering.explicit(sortedItemList).onResultOf(ItemStack::getItem);

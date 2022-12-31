@@ -2,36 +2,37 @@ package com.raptorbk.CyanWarriorSwordsRedux.essences;
 
 import com.raptorbk.CyanWarriorSwordsRedux.CyanWarriorSwordsReduxMod;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModTrigger;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BeastEssence extends EssenceBase {
+public class BeastEssence extends Item {
 
-    public void unlockCACH(PlayerEntity entity, World world){
-        if(!(world instanceof ServerWorld)) return;
-        ServerPlayerEntity serverPlayerEntity= (ServerPlayerEntity) entity;
-        ModTrigger.Removingdentstrigger.trigger(serverPlayerEntity);
+    public void unlockCACH(Player entity, Level world){
+        if(!(world instanceof ServerLevel)) return;
+        ServerPlayer serverPlayer= (ServerPlayer) entity;
+        ModTrigger.Removingdentstrigger.trigger(serverPlayer);
     }
 
+
     @Override
-    public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
+    public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn) {
         unlockCACH(playerIn,worldIn);
         super.onCraftedBy(stack, worldIn, playerIn);
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.cwsr.beast_essence"));
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("tooltip.cwsr.beast_essence"));
     }
 
     public BeastEssence() {

@@ -4,33 +4,35 @@ import com.raptorbk.CyanWarriorSwordsRedux.CyanWarriorSwordsReduxMod;
 import com.raptorbk.CyanWarriorSwordsRedux.SWORD_CWSR;
 import com.raptorbk.CyanWarriorSwordsRedux.config.SwordConfig;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.IServerWorldInfo;
-import net.minecraft.world.storage.IWorldInfo;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ServerLevelData;
+
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 
 public class ATLANTIS_SWORD extends SWORD_CWSR {
-    private static IItemTier iItemTier = new IItemTier() {
+    private static Tier iItemTier = new Tier() {
         private Item repairItem;
         @Override
         public int getUses() {
@@ -67,12 +69,12 @@ public class ATLANTIS_SWORD extends SWORD_CWSR {
         super(iItemTier, SwordConfig.ATLANTIS_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
     }
 
-    public void addEffectsTick(PlayerEntity playerIn){
-        playerIn.addEffect(new EffectInstance(Effects.CONDUIT_POWER,10,0));
-        playerIn.addEffect(new EffectInstance(Effects.DOLPHINS_GRACE,10,0));
+    public void addEffectsTick(Player playerIn){
+        playerIn.addEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER,10,0));
+        playerIn.addEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE,10,0));
     }
 
-    public void setRain(IServerWorldInfo worldInfo){
+    public void setRain(ServerLevelData worldInfo){
         worldInfo.setClearWeatherTime(0);
         worldInfo.setRainTime(6000);
         worldInfo.setThunderTime(6000);
@@ -80,7 +82,7 @@ public class ATLANTIS_SWORD extends SWORD_CWSR {
         worldInfo.setThundering(false);
     }
 
-    public void setClear(IServerWorldInfo worldInfo){
+    public void setClear(ServerLevelData worldInfo){
         worldInfo.setClearWeatherTime(6000);
         worldInfo.setRainTime(0);
         worldInfo.setThunderTime(0);
@@ -90,14 +92,19 @@ public class ATLANTIS_SWORD extends SWORD_CWSR {
 
 
     @Override
-    public ActionResult<ItemStack> eventRC(World world, PlayerEntity entity, Hand handIn, ItemStack OffHandItem) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(new TranslatableComponent("tooltip.cwsr.atlantis_sword"));
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> eventRC(Level world, Player entity, InteractionHand handIn, ItemStack OffHandItem) {
         ItemStack currentSword = entity.getItemInHand(handIn);
 
-        if(!(world instanceof ServerWorld)) return new ActionResult<>(ActionResultType.PASS, entity.getItemInHand(handIn));
+        if(!(world instanceof ServerLevel)) return new InteractionResultHolder<>(InteractionResult.PASS, entity.getItemInHand(handIn));
 
-        ServerWorld worldSV = (ServerWorld) world;
+        ServerLevel worldSV = (ServerLevel) world;
 
-        IServerWorldInfo wrldINF= (IServerWorldInfo) worldSV.getLevelData();
+        ServerLevelData wrldINF= (ServerLevelData) worldSV.getLevelData();
 
 
         if(wrldINF.isRaining() || wrldINF.isThundering()){
@@ -108,41 +115,35 @@ public class ATLANTIS_SWORD extends SWORD_CWSR {
 
 
 
-        return new ActionResult<>(ActionResultType.SUCCESS, currentSword);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, currentSword);
     }
 
 
-    public ActionResult<ItemStack> use(World world, PlayerEntity entity, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {
         ItemStack currentSword = entity.getItemInHand(handIn);
 
         ItemStack ActiveSynergyTotemStack = new ItemStack(RegistryHandler.active_synergy_TOTEM.get(),1);
 
-        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.inventory.contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
-currentSword.hurtAndBreak(SwordConfig.ATLANTIS_SWORD_USE_COST.get(),entity,playerEntity -> {
+        if(!lfAbilityTotem(entity) && ((entity.getMainHandItem() != entity.getItemInHand(handIn) && entity.getMainHandItem().getItem() instanceof SWORD_CWSR && entity.getInventory().contains(ActiveSynergyTotemStack)) || entity.getMainHandItem() == entity.getItemInHand(handIn) || (entity.getOffhandItem()==entity.getItemInHand(handIn) && !(entity.getMainHandItem().getItem() instanceof SWORD_CWSR)))){
+currentSword.hurtAndBreak(SwordConfig.ATLANTIS_SWORD_USE_COST.get(),entity,Player -> {
                 unlockDestroyACH(entity,world);
-                playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+                Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
 
         return callerRC(world,entity,handIn,RegistryHandler.atlantis_SWORD.getId(),SwordConfig.ATLANTIS_SWORD_COOLDOWN.get());
     }
 
-
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent("tooltip.cwsr.atlantis_sword"));
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
         if(isSelected && !worldIn.isClientSide){
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
                 addEffectsTick(playerIn);
             }
         }else{
-            if(entityIn instanceof PlayerEntity) {
-                PlayerEntity playerIn = (PlayerEntity) entityIn;
+            if(entityIn instanceof Player) {
+                Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
                 if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.atlantis_SWORD.getId())){
@@ -154,11 +155,11 @@ currentSword.hurtAndBreak(SwordConfig.ATLANTIS_SWORD_USE_COST.get(),entity,playe
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker){
-        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,playerEntity -> {
-            if(attacker instanceof PlayerEntity){
-                unlockDestroyACH((PlayerEntity) attacker,attacker.getCommandSenderWorld());
+        stack.hurtAndBreak(SwordConfig.ALL_SWORDS_HIT_COST.get(),attacker,Player -> {
+            if(attacker instanceof Player){
+                unlockDestroyACH((Player) attacker,attacker.getCommandSenderWorld());
             }
-            playerEntity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
+            Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
         });
         return true;
     }

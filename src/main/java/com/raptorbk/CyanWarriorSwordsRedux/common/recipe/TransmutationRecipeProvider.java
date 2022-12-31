@@ -3,17 +3,16 @@ package com.raptorbk.CyanWarriorSwordsRedux.common.recipe;
 import com.raptorbk.CyanWarriorSwordsRedux.CyanWarriorSwordsReduxMod;
 import com.raptorbk.CyanWarriorSwordsRedux.common.recipe.builder.TransmutationRecipeBuilder;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.function.Consumer;
 
 public class TransmutationRecipeProvider implements ISubRecipeProvider{
 
     @Override
-    public void addRecipes(Consumer<IFinishedRecipe> consumer){
+    public void addRecipes(Consumer<FinishedRecipe> consumer){
         String basePath = "transmutation/";
 
         TransmutationRecipeBuilder.transmutation(Ingredient.of(RegistryHandler.beast_SWORD.get()), new ItemStack(RegistryHandler.beast_ESSENCE.get()), 1,1,1000).build(consumer, CyanWarriorSwordsReduxMod.rl(basePath+"beast_essence_smelt_o1"));

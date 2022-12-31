@@ -1,15 +1,19 @@
 package com.raptorbk.CyanWarriorSwordsRedux.recipes;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.AbstractCookingRecipe;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import com.raptorbk.CyanWarriorSwordsRedux.CyanWarriorSwordsReduxMod;
+import com.raptorbk.CyanWarriorSwordsRedux.util.ModItems;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 
 public class TransmutationRecipe extends AbstractCookingRecipe {
+
 
     public final ResourceLocation id;
     public final String tab;
@@ -19,7 +23,7 @@ public class TransmutationRecipe extends AbstractCookingRecipe {
     public final int cookTime;
 
     public TransmutationRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
-        super(CyanWarriorSwordsRecipesType.TRANSMUTATION, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
+        super(CyanWarriorSwordsRecipeType.TRANSMUTATION, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
 
         this.id = idIn;
         this.tab = groupIn;
@@ -30,14 +34,14 @@ public class TransmutationRecipe extends AbstractCookingRecipe {
     }
 
     @Override
-    public boolean matches(IInventory inv, World worldIn) {
+    public boolean matches(Container inv, Level worldIn) {
         return this.ingredient.test(inv.getItem(0));
     }
 
 
 
     @Override
-    public ItemStack assemble(IInventory inv) {
+    public ItemStack assemble(Container inv) {
         return this.result.copy();
     }
 
@@ -63,14 +67,21 @@ public class TransmutationRecipe extends AbstractCookingRecipe {
         return this.tab;
     }
 
+
+
+
     @Override
-    public ResourceLocation getId() {
-        return this.id;
+    public ItemStack getToastSymbol(){return new ItemStack(ModItems.TRANSMUTATION_FURNACE.get());}
+
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return MiscObjects.transmutation;
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer() {
-        return MiscObjects.transmutation;
+    public RecipeType<TransmutationRecipe> getType()
+    {
+        return CyanWarriorSwordsRecipeType.TRANSMUTATION;
     }
 
     public int getCookTime() {
@@ -79,5 +90,10 @@ public class TransmutationRecipe extends AbstractCookingRecipe {
 
     public float getExperience() {
         return this.experience;
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return this.id;
     }
 }

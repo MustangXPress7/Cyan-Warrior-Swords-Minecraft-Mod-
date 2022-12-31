@@ -4,23 +4,28 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.ModTrigger;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EnderPearlEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SwordItem;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.projectile.ThrownEnderpearl;
+import net.minecraft.world.item.enchantment.Enchantment;
+
+import net.minecraft.world.entity.Entity;
+
+import net.minecraft.world.entity.player.Player;
+
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+
 
 import java.util.List;
 import java.util.Map;
@@ -35,15 +40,15 @@ public class SWORD_CWSR extends SwordItem {
     public int count=0;
     public boolean delayThrow=false;
     public int swordCD=0;
-    public EnderPearlEntity throwEnder=null;
-    public SWORD_CWSR(IItemTier tier, int attackDamageIn, float attackSpeedIn, Item.Properties builder) {
+    public ThrownEnderpearl throwEnder=null;
+    public SWORD_CWSR(Tier tier, int attackDamageIn, float attackSpeedIn, Item.Properties builder) {
         super(tier,attackDamageIn,attackSpeedIn,builder);
     }
 
 
     public int getSwordCD() {return this.swordCD;}
 
-    public void setThrowEnder(EnderPearlEntity throwEnder) {
+    public void setThrowEnder(ThrownEnderpearl throwEnder) {
         this.throwEnder = throwEnder;
     }
 
@@ -64,8 +69,8 @@ public class SWORD_CWSR extends SwordItem {
     }
 
 
-    public void throwEnderPearlEvent(Entity entityIn,World worldIn, ItemStack stack){
-        if(this.getDelayThrow() && entityIn instanceof PlayerEntity && (((PlayerEntity) entityIn).getMainHandItem()==stack || ((PlayerEntity) entityIn).getOffhandItem()==stack)){
+    public void throwEnderPearlEvent(Entity entityIn,Level worldIn, ItemStack stack){
+        if(this.getDelayThrow() && entityIn instanceof Player && (((Player) entityIn).getMainHandItem()==stack || ((Player) entityIn).getOffhandItem()==stack)){
             if(this.getCount() >= 5){
                 this.setCount(0);
                 this.setDelayThrow(false);
@@ -77,7 +82,7 @@ public class SWORD_CWSR extends SwordItem {
         }
     }
 
-    protected boolean applyToAdvancement(ServerPlayerEntity player, Advancement advancementIn) {
+    protected boolean applyToAdvancement(ServerPlayer player, Advancement advancementIn) {
         AdvancementProgress advancementprogress = player.getAdvancements().getOrStartProgress(advancementIn);
         if (advancementprogress.isDone()) {
             return false;
@@ -89,15 +94,15 @@ public class SWORD_CWSR extends SwordItem {
         }
     }
 
-    public void unlockDestroyACH(PlayerEntity entity, World world){
-        if(!(world instanceof ServerWorld)) return;
-        ServerPlayerEntity serverPlayerEntity= (ServerPlayerEntity) entity;
-        ModTrigger.Sworddestroyedtrigger.trigger(serverPlayerEntity);
+    public void unlockDestroyACH(Player entity, Level world){
+        if(!(world instanceof ServerLevel)) return;
+        ServerPlayer serverPlayer= (ServerPlayer) entity;
+        ModTrigger.Sworddestroyedtrigger.trigger(serverPlayer);
     }
 
 
 
-    public EnderPearlEntity getThrowEnder() {
+    public ThrownEnderpearl getThrowEnder() {
         return this.throwEnder;
     }
 
@@ -134,32 +139,32 @@ public class SWORD_CWSR extends SwordItem {
         return this.damageBool;
     }
 
-    public void useRightClick(World worldIn, PlayerEntity playerIn, Hand hand) {
+    public void useRightClick(Level worldIn, Player playerIn, InteractionHand hand) {
         this.firstExec=false;
-       this.getItem().use(worldIn, playerIn, hand);
+       this.asItem().use(worldIn, playerIn, hand);
     }
 
-    public ActionResult<ItemStack> eventRC(World world, PlayerEntity entity, Hand handIn, ItemStack OffHandItem) {
+    public InteractionResultHolder<ItemStack> eventRC(Level world, Player entity, InteractionHand handIn, ItemStack OffHandItem) {
 
         ItemStack currentSword = entity.getItemInHand(handIn);
 
-        return new ActionResult<>(ActionResultType.SUCCESS, currentSword);
+        return new InteractionResultHolder<>(InteractionResult.SUCCESS, currentSword);
     }
 
-    public void unlockSEACH(PlayerEntity entity, World world){
-        if(!(world instanceof ServerWorld)) return;
-        ServerPlayerEntity serverPlayerEntity= (ServerPlayerEntity) entity;
-        ModTrigger.Somethingelsetrigger.trigger(serverPlayerEntity);
+    public void unlockSEACH(Player entity, Level world){
+        if(!(world instanceof ServerLevel)) return;
+        ServerPlayer serverPlayer= (ServerPlayer) entity;
+        ModTrigger.Somethingelsetrigger.trigger(serverPlayer);
     }
 
     @Override
-    public void onCraftedBy(ItemStack stack, World worldIn, PlayerEntity playerIn) {
+    public void onCraftedBy(ItemStack stack, Level worldIn, Player playerIn) {
         unlockSEACH(playerIn,worldIn);
         super.onCraftedBy(stack, worldIn, playerIn);
     }
 
-    public boolean lfAbilityTotem(PlayerEntity entity){
-        List<ItemStack> listItems = entity.inventory.items;
+    public boolean lfAbilityTotem(Player entity){
+        List<ItemStack> listItems = entity.getInventory().items;
         boolean isINH=false;
         for (ItemStack temp : listItems) {
             if(temp.getItem() instanceof ABILITY_TOTEM){
@@ -183,13 +188,13 @@ public class SWORD_CWSR extends SwordItem {
 
     public void setCD(){ }
 
-    public void unlockDWACH(PlayerEntity entity, World world){
-        if(!(world instanceof ServerWorld)) return;
-        ServerPlayerEntity serverPlayerEntity= (ServerPlayerEntity) entity;
-        ModTrigger.Dualwieldachtrigger.trigger(serverPlayerEntity);
+    public void unlockDWACH(Player entity, Level world){
+        if(!(world instanceof ServerLevel)) return;
+        ServerPlayer serverPlayer= (ServerPlayer) entity;
+        ModTrigger.Dualwieldachtrigger.trigger(serverPlayer);
     }
 
-    public ActionResult<ItemStack> callerRC(World world, PlayerEntity entity, Hand handIn, ResourceLocation swordCH, int CooldownRC) {
+    public InteractionResultHolder<ItemStack> callerRC(Level world, Player entity, InteractionHand handIn, ResourceLocation swordCH, int CooldownRC) {
 
 
         ItemStack OffHandItem = entity.getOffhandItem();
@@ -207,19 +212,26 @@ public class SWORD_CWSR extends SwordItem {
 
         ItemStack ActiveSynergyTotemStack = new ItemStack(RegistryHandler.active_synergy_TOTEM.get(),1);
 
-        List<ItemStack> listItems = entity.inventory.items;
+        List<ItemStack> listItems = entity.getInventory().items;
         boolean isINH=false;
+        int totemHits=0;
         for (ItemStack temp : listItems) {
-            if(temp.getItem() instanceof SYNERGY_TOTEM || temp.getItem() instanceof ACTIVE_SYNERGY_TOTEM || temp.getItem() instanceof ABILITY_TOTEM){
-                if(checkINH(temp)){
-                    isINH=true;
-                }
+            if(totemHits==2){
                 break;
+            }
+            if(temp.getItem() instanceof ABILITY_TOTEM || temp.getItem() instanceof SYNERGY_TOTEM || temp.getItem() instanceof ACTIVE_SYNERGY_TOTEM){
+                totemHits=totemHits+1;
+                if(checkINH(temp)){
+                    if(isINH==false){
+                        isINH=true;
+                    }
+                }
+
             }
         }
 
         if(isINH){
-            return new ActionResult<>(ActionResultType.SUCCESS, ReturnableItem);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, ReturnableItem);
         }
 
 
@@ -228,7 +240,7 @@ public class SWORD_CWSR extends SwordItem {
         //Si la espada se encuentra en la mano izquierda pero hay otra en la derecha, la derecha se encarga de todo
 
         if(Objects.equals(OffHandItem.getItem().getRegistryName(), swordCH)   && MainHandItem.getItem() instanceof SWORD_CWSR & !(Objects.equals(OffHandItem.getItem().getRegistryName(),MainHandItem.getItem().getRegistryName()))){
-            return new ActionResult<>(ActionResultType.SUCCESS, ReturnableItem);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, ReturnableItem);
         }
 
         if(firstExec){
@@ -238,11 +250,11 @@ public class SWORD_CWSR extends SwordItem {
                 return eventRC(world,entity,handIn,ReturnableItem);
             }else if (MainHandItem.getItem() instanceof SWORD_CWSR && OffHandItem.getItem() instanceof SWORD_CWSR){{  //Las dos son espadas cwsr
                 if(!(entity.getCooldowns().isOnCooldown(OffHandItem.getItem()))){
-                    if(entity.inventory.contains(ActiveSynergyTotemStack)){
+                    if(entity.getInventory().contains(ActiveSynergyTotemStack)){
                         if(!(Objects.equals(OffHandItem.getItem().getRegistryName(),MainHandItem.getItem().getRegistryName()))){
                             if(!blocker){
                                 ((SWORD_CWSR) OffHandItem.getItem()).setDamagePU();
-                                OffHandItem.hurtAndBreak(((SWORD_CWSR) OffHandItem.getItem()).getDamagePU(),entity,playerEntity -> playerEntity.broadcastBreakEvent(EquipmentSlotType.OFFHAND));
+                                OffHandItem.hurtAndBreak(((SWORD_CWSR) OffHandItem.getItem()).getDamagePU(),entity,Player -> Player.broadcastBreakEvent(EquipmentSlot.OFFHAND));
                                 ((SWORD_CWSR) OffHandItem.getItem()).setCD();
                                 entity.getCooldowns().addCooldown(OffHandItem.getItem(), ((SWORD_CWSR) OffHandItem.getItem()).getSwordCD());
                                 ((SWORD_CWSR) OffHandItem.getItem()).eventRC(world, entity, handIn,OffHandItem);

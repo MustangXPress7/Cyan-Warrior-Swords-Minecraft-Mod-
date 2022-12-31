@@ -1,5 +1,6 @@
 {
   "item.cwsr.beast_essence": "Esencia de las Bestias",
+  "itemGroup.cwsr": "Cyan Warrior Swords",
   "item.cwsr.earth_sword": "Espada de Tierra",
   "item.cwsr.peaceful_nature": "Espada de la Naturaleza Amigable",
   "item.cwsr.wild_nature": "Espada de la Naturaleza Salvaje",
@@ -125,5 +126,5 @@
   "tooltip.cwsr.wind_essence": "Esencia: Forma más pura de energía de viento.",
   "tooltip.cwsr.light_essence": "Esencia: Forma más pura de energía de luz.",
   "tooltip.cwsr.mixed_essence": "Esencia: Forma más pura de energía de los 9 elementos vitales.",
-  "itemGroup.cwsrtab": "Cyan Warrior Swords"
+  "CreativeModeTab.cwsrTab": "Cyan Warrior Swords"
 }

@@ -1,10 +1,11 @@
 package com.raptorbk.CyanWarriorSwordsRedux.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
+
 
 public interface SurroundEffect {
-    void execute(World world, PlayerEntity entity, Hand handIn,Block blk);
+    void execute(Level world, Player entity, InteractionHand handIn, Block blk);
 }

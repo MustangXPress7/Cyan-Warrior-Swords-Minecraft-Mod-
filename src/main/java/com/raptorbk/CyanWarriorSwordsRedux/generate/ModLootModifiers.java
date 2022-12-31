@@ -25,3 +25,4 @@ public class ModLootModifiers {
         reg.register(Init.setup(new EssencesStructureAdditionModifier.Serializer(), "essences_dungeon"));
     }
 }
+

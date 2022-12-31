@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "cwsr:ability_totem"
+            "items": [
+              "cwsr:ability_totem"
+            ]
           }
         ]
       }

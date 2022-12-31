@@ -1,13 +1,14 @@
 package com.raptorbk.CyanWarriorSwordsRedux;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentType;
-import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.Enchantment;
+
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class INH_ENCHANTMENT extends Enchantment {
     public INH_ENCHANTMENT(){
-        super(Rarity.RARE, EnchantmentType.WEAPON,new EquipmentSlotType[] {EquipmentSlotType.MAINHAND});
+        super(Rarity.RARE, EnchantmentCategory.WEAPON,new EquipmentSlot[] {EquipmentSlot.MAINHAND});
     }
 
     @Override
