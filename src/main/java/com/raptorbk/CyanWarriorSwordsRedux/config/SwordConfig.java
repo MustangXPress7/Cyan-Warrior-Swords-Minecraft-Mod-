@@ -443,7 +443,7 @@ public class SwordConfig {
                 .defineInRange("SwordConfig.ICE_SWORD_HIT_TK", 60, 1, 1000);
         ICE_SWORD_USE_COST = common
                 .comment("Ice Sword Right Click durability Cost")
-                .defineInRange("SwordConfig.ICE_SWORD_USE_COST", 15, 1, 1000);
+                .defineInRange("SwordConfig.ICE_SWORD_USE_COST", 5, 1, 1000);
         ICE_SWORD_COOLDOWN = common
                 .comment("Ice Sword Right Click Cooldown (In ticks)")
                 .defineInRange("SwordConfig.ICE_SWORD_COOLDOWN", 250, 1, 1000);

@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ConfiguredStructureTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -107,7 +108,7 @@ public class ENDER_PORTAL extends SWORD_CWSR {
 
             entity.startUsingItem(handIn);
             if (world instanceof ServerLevel) {
-                BlockPos blockpos = ((ServerLevel)world).getChunkSource().getGenerator().findNearestMapFeature((ServerLevel)world, StructureFeature.STRONGHOLD, entity.blockPosition(), 100, false);
+                BlockPos blockpos = ((ServerLevel) world).findNearestMapFeature(ConfiguredStructureTags.EYE_OF_ENDER_LOCATED, entity.blockPosition(), 100, false);
                 if (blockpos != null) {
                     EyeOfEnder eyeofenderentity = new EyeOfEnder(world, entity.getX(), entity.getY(0.5D), entity.getZ());
                     eyeofenderentity.setItem(itemstack);

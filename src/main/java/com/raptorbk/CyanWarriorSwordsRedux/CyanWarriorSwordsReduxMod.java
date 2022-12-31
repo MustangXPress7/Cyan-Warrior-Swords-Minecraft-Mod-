@@ -5,6 +5,7 @@ import com.google.common.collect.Ordering;
 import com.raptorbk.CyanWarriorSwordsRedux.blocks.transmutationfurnace.*;
 import com.raptorbk.CyanWarriorSwordsRedux.config.Config;
 import com.raptorbk.CyanWarriorSwordsRedux.generate.ModLootModifierProvider;
+import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipeType;
 import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipesProvider;
 import com.raptorbk.CyanWarriorSwordsRedux.screens.TransmutationFurnaceScreen;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModItems;
@@ -72,7 +73,7 @@ public class CyanWarriorSwordsReduxMod
     static Comparator<ItemStack> tabSorter;
 
     private void setup(final FMLCommonSetupEvent event) {
-
+        CyanWarriorSwordsRecipeType.init();
         List<Item> sortedItemList = Arrays.asList(
                 RegistryHandler.fire_SWORD.get(),
                 RegistryHandler.water_SWORD.get(),

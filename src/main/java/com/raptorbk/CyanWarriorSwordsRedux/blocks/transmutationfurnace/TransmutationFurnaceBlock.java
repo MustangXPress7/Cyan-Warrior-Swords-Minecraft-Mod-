@@ -28,7 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 
 import javax.annotation.Nullable;
@@ -45,11 +45,9 @@ public class TransmutationFurnaceBlock extends HorizontalDirectionalBlock implem
 
 
     }
-
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter p_49817_, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable BlockGetter p_49817_, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(new TranslatableComponent("tooltip.cwsr.transmutation_furnace"));
-
     }
 
     @Override

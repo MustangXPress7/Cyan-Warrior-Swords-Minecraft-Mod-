@@ -12,6 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import com.raptorbk.CyanWarriorSwordsRedux.recipes.recipeInit;
+
 
 public class TransmutationFurnaceBlockEntity extends AbstractFurnaceBlockEntity {
     private AbstractCookingRecipe recipeType;
@@ -61,7 +63,7 @@ public class TransmutationFurnaceBlockEntity extends AbstractFurnaceBlockEntity 
         int progress = transmutationfurnace.dataAccess.get(2);
 
         if (!level.isClientSide && ((progress - 1) % 32 == 0 && (progress + 16 < transmutationfurnace.dataAccess.get(3)))) {
-            level.getBlockTicks().scheduleTick(pos, TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.get(), 0);
+            level.scheduleTick(pos, TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.get(), 0);
         }
     }
 }
