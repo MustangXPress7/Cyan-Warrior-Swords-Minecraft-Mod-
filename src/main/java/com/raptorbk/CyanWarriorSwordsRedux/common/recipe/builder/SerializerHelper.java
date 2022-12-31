@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 
@@ -18,7 +19,7 @@ public class SerializerHelper {
     public static JsonElement serializeItemStack(@Nonnull ItemStack stack)
     {
         JsonObject json = new JsonObject();
-        json.addProperty("item", stack.getItem().getRegistryName().toString());
+        json.addProperty("item", ForgeRegistries.ITEMS.getKey(stack.getItem()).toString());
         if (stack.getCount() > 1)
         {
             json.addProperty("count", stack.getCount());

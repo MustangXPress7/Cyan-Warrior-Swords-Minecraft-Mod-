@@ -8,7 +8,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -87,7 +87,7 @@ public class WIND_BLAST extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.wind_blast"));
+        tooltip.add(Component.translatable("tooltip.cwsr.wind_blast"));
     }
 
 

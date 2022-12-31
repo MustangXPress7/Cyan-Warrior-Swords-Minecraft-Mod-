@@ -9,8 +9,9 @@ import java.util.Set;
 
 public class CyanWarriorSwordRecipeRegistrar {
 
+
     public Set<TransmutationRecipe> getTransmutationRecipes(Level world)
     {
-        return ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(CyanWarriorSwordsRecipeType.TRANSMUTATION));
+        return ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(CyanWarriorSwordsRecipeType.TRANSMUTATION.get()));
     }
 }

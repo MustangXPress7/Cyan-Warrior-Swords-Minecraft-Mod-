@@ -7,7 +7,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.ModTrigger;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -30,6 +30,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 import javax.annotation.Nullable;
@@ -80,7 +81,7 @@ public class WIND_IMPULSE extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.wind_impulse"));
+        tooltip.add(Component.translatable("tooltip.cwsr.wind_impulse"));
     }
 
     @Override
@@ -162,7 +163,7 @@ currentSword.hurtAndBreak(SwordConfig.WIND_IMPULSE_SWORD_USE_COST.get(), entity,
                 Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
-                if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.earth_SWORD.getId())){
+                if(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()), RegistryHandler.earth_SWORD.getId())){
                     addEffectsTick(playerIn);
                 }
             }

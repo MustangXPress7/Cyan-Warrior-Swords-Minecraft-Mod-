@@ -5,7 +5,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.SWORD_CWSR;
 import com.raptorbk.CyanWarriorSwordsRedux.config.SwordConfig;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -90,7 +90,7 @@ currentSword.hurtAndBreak(SwordConfig.DARK_SWORD_USE_COST.get(),entity,Player ->
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.dark_sword"));
+        tooltip.add(Component.translatable("tooltip.cwsr.dark_sword"));
     }
 
     @Override

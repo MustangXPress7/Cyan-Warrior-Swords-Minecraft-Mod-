@@ -2,11 +2,13 @@ package com.raptorbk.CyanWarriorSwordsRedux.generate;
 
 
 import com.raptorbk.CyanWarriorSwordsRedux.CyanWarriorSwordsReduxMod;
+import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipesProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+
 
 @Mod.EventBusSubscriber(modid = CyanWarriorSwordsReduxMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class GenerationInit {
@@ -17,9 +19,10 @@ public class GenerationInit {
 
         BlockTagsProvider blockTags = new BlockTagsProvider(gen, helper);
 
-
-        gen.addProvider(blockTags);
-        gen.addProvider(new LootTableProvider(gen));
+        gen.addProvider(event.includeServer(),new CyanWarriorSwordsRecipesProvider(gen));
+        //gen.addProvider(event.includeServer(),new ModLootModifierProvider(gen));
+        gen.addProvider(event.includeServer(), blockTags);
+        //gen.addProvider(event.includeServer(), new LootTableProvider(gen));
 
     }
 }

@@ -8,7 +8,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -103,7 +103,7 @@ public class DARK_NETHER extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.dark_nether"));
+        tooltip.add(Component.translatable("tooltip.cwsr.dark_nether"));
     }
 
 
@@ -127,7 +127,7 @@ public class DARK_NETHER extends SWORD_CWSR {
         witherEntity.yPower=vec3.y;
         witherEntity.zPower=vec3.z;
         world.addFreshEntity(witherEntity);
-        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(new Random(),0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
 
         Random r = new Random();
         int game = r.nextInt(100);

@@ -1,5 +1,6 @@
 package com.raptorbk.CyanWarriorSwordsRedux.util;
 
+import com.mojang.serialization.Codec;
 import com.raptorbk.CyanWarriorSwordsRedux.*;
 import com.raptorbk.CyanWarriorSwordsRedux.essences.*;
 import com.raptorbk.CyanWarriorSwordsRedux.items.SwordHandle;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -40,14 +42,8 @@ public class RegistryHandler {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CyanWarriorSwordsReduxMod.MOD_ID);
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, CyanWarriorSwordsReduxMod.MOD_ID);
 
-    public static void init() {
 
-        IEventBus MOD_EVENT_BUS;
-        MOD_EVENT_BUS=FMLJavaModLoadingContext.get().getModEventBus();
-        BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ENCHANTMENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
-    }
+    public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, CyanWarriorSwordsReduxMod.MOD_ID);
 
 
 
@@ -215,4 +211,7 @@ public class RegistryHandler {
     public static RegistryObject<SwordItem> wind_BLAST = ITEMS.register("wind_blast", () -> {
         return new WIND_BLAST();
     });
+
+    public static final RegistryObject<Codec<CyanWarriorSwordsLootModifier>> CWSR_LOOT_MODIFIER = LOOT_MODIFIERS.register("cwsr_loot_modifier", CyanWarriorSwordsLootModifier.CODEC);
+
 }

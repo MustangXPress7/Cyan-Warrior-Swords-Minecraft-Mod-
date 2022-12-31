@@ -7,7 +7,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.ModTrigger;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -29,6 +29,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.storage.ServerLevelData;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 import javax.annotation.Nullable;
@@ -85,7 +86,7 @@ public class TIME_SWORD extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.time_sword"));
+        tooltip.add(Component.translatable("tooltip.cwsr.time_sword"));
     }
 
     @Override
@@ -170,7 +171,7 @@ currentSword.hurtAndBreak(SwordConfig.TIME_SWORD_USE_COST.get(),entity,Player ->
                 Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
-                if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.time_SWORD.getId())){
+                if(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()), RegistryHandler.time_SWORD.getId())){
                     addEffectsTick(playerIn);
                 }
             }

@@ -10,7 +10,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -41,6 +41,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import net.minecraft.util.*;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 import javax.annotation.Nullable;
@@ -97,7 +98,7 @@ public class COMBUSTION_SWORD extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.combustion_sword"));
+        tooltip.add(Component.translatable("tooltip.cwsr.combustion_sword"));
     }
 
 
@@ -197,7 +198,7 @@ currentSword.hurtAndBreak(SwordConfig.COMBUSTION_SWORD_USE_COST.get(),entity,Pla
     @Override
     public void onCraftedBy(ItemStack stack, Level world, Player entity) {
         unlockSEACH(entity,world);
-        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(new Random(),0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
         //world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),1.0F, Explosion.BlockInteraction.NONE);
     }
 
@@ -217,7 +218,7 @@ currentSword.hurtAndBreak(SwordConfig.COMBUSTION_SWORD_USE_COST.get(),entity,Pla
                 Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
-                if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.combustion_SWORD.getId())){
+                if(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()), RegistryHandler.combustion_SWORD.getId())){
                     addEffectsTick(playerIn);
                 }
             }

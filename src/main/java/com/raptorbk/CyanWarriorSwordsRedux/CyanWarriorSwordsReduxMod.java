@@ -4,22 +4,23 @@ package com.raptorbk.CyanWarriorSwordsRedux;
 import com.google.common.collect.Ordering;
 import com.raptorbk.CyanWarriorSwordsRedux.blocks.transmutationfurnace.*;
 import com.raptorbk.CyanWarriorSwordsRedux.config.Config;
-import com.raptorbk.CyanWarriorSwordsRedux.generate.ModLootModifierProvider;
+import com.raptorbk.CyanWarriorSwordsRedux.config.ItemConfig;
 import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipeType;
-import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipesProvider;
 import com.raptorbk.CyanWarriorSwordsRedux.screens.TransmutationFurnaceScreen;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModItems;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModMenus;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.NonNullList;
+import com.raptorbk.CyanWarriorSwordsRedux.recipes.recipeInit;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -29,7 +30,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLPaths;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.Arrays;
@@ -44,10 +44,19 @@ public class CyanWarriorSwordsReduxMod
     public  static  final String MOD_ID= "cwsr";
     public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public CyanWarriorSwordsReduxMod() {
+        if(!ItemConfig.initialized){
+            ItemConfig.load();
+        }
         final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         final IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 
+
+
        TransmutationFurnaceBlocks.BLOCKS.register(modEventBus);
+        //ModLootModifiers.LOOT_SERIALIZERS.register(modEventBus);
+        CyanWarriorSwordsRecipeType.RECIPE_SERIALIZERS.register(modEventBus);
+        recipeInit.RECIPE_SERIALIZERS.register(modEventBus);
+
        TransmutationFurnaceTileEntities.TILE_ENTITIES.register(modEventBus);
 
        ModItems.ITEMS.register(modEventBus);
@@ -65,7 +74,13 @@ public class CyanWarriorSwordsReduxMod
         Config.loadConfig(Config.CLIENT, FMLPaths.CONFIGDIR.get().resolve("cwsr-client.toml").toString());
         Config.loadConfig(Config.COMMON, FMLPaths.CONFIGDIR.get().resolve("cwsr-common.toml").toString());
 
-        RegistryHandler.init();
+
+
+
+        RegistryHandler.BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        RegistryHandler.ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        RegistryHandler.ENCHANTMENTS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        RegistryHandler.LOOT_MODIFIERS.register(FMLJavaModLoadingContext.get().getModEventBus());
 
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -73,7 +88,6 @@ public class CyanWarriorSwordsReduxMod
     static Comparator<ItemStack> tabSorter;
 
     private void setup(final FMLCommonSetupEvent event) {
-        CyanWarriorSwordsRecipeType.init();
         List<Item> sortedItemList = Arrays.asList(
                 RegistryHandler.fire_SWORD.get(),
                 RegistryHandler.water_SWORD.get(),
@@ -141,9 +155,9 @@ public class CyanWarriorSwordsReduxMod
     @SubscribeEvent
     public void gatherData(GatherDataEvent event){
         DataGenerator gen = event.getGenerator();
-
-        gen.addProvider(new CyanWarriorSwordsRecipesProvider(gen));
-        gen.addProvider(new ModLootModifierProvider(gen));
+        /*
+        gen.addProvider(event.includeServer(),new CyanWarriorSwordsRecipesProvider(gen));
+        gen.addProvider(event.includeServer(),new ModLootModifierProvider(gen));*/
     }
 
 

@@ -10,7 +10,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -38,6 +38,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.levelgen.feature.SnowAndFreezeFeature;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -94,7 +95,7 @@ public class ICE_SWORD extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.ice_sword"));
+        tooltip.add(Component.translatable("tooltip.cwsr.ice_sword"));
     }
 
     @Override
@@ -209,7 +210,7 @@ currentSword.hurtAndBreak(SwordConfig.ICE_SWORD_USE_COST.get(), entity,Player ->
                 Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
-                if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.ice_SWORD.getId())){
+                if(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()), RegistryHandler.ice_SWORD.getId())){
                     LivingEntity tempEntity=(LivingEntity) entityIn;
                     BlockPos playerBlockStandingPos=entityIn.blockPosition();
                     FrostWalkerEnchantment.onEntityMoved(tempEntity,worldIn,playerBlockStandingPos,2);

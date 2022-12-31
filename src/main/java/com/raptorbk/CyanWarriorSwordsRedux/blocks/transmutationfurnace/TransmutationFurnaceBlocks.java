@@ -18,7 +18,6 @@ public class TransmutationFurnaceBlocks {
             .Properties.of(Material.STONE)
             .sound(SoundType.STONE)
             .strength(1.5f,6.0f)
-            .requiresCorrectToolForDrops()
             .lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 13 : 0)));
 
 }

@@ -7,7 +7,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.config.SwordConfig;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -33,6 +33,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 import javax.annotation.Nullable;
@@ -88,7 +89,7 @@ public class METEOR_SWORD extends METEOR_CLASS_SWORD {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.meteor_sword"));
+        tooltip.add(Component.translatable("tooltip.cwsr.meteor_sword"));
     }
 
     @Override
@@ -159,7 +160,7 @@ currentSword.hurtAndBreak(SwordConfig.METEOR_SWORD_USE_COST.get(),entity,Player 
 
     @Override
     public void onCraftedBy(ItemStack stack, Level world, Player entity) {
-        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(new Random(),0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
         //world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),1.0F, Explosion.BlockInteraction.NONE);
     }
 
@@ -192,7 +193,7 @@ currentSword.hurtAndBreak(SwordConfig.METEOR_SWORD_USE_COST.get(),entity,Player 
                 Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
-                if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.meteor_SWORD.getId())){
+                if(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()), RegistryHandler.meteor_SWORD.getId())){
                     addEffectsTick(playerIn);
                 }
             }

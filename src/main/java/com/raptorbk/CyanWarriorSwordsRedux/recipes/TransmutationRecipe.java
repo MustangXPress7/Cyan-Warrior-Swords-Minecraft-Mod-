@@ -23,7 +23,7 @@ public class TransmutationRecipe extends AbstractCookingRecipe {
     public final int cookTime;
 
     public TransmutationRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
-        super(CyanWarriorSwordsRecipeType.TRANSMUTATION, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
+        super(CyanWarriorSwordsRecipeType.TRANSMUTATION.get(), idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
 
         this.id = idIn;
         this.tab = groupIn;
@@ -81,7 +81,7 @@ public class TransmutationRecipe extends AbstractCookingRecipe {
     @Override
     public RecipeType<TransmutationRecipe> getType()
     {
-        return CyanWarriorSwordsRecipeType.TRANSMUTATION;
+        return CyanWarriorSwordsRecipeType.TRANSMUTATION.get();
     }
 
     public int getCookTime() {

@@ -16,6 +16,6 @@ public class BlockTagsProvider extends net.minecraft.data.tags.BlockTagsProvider
 
     @Override
     protected void addTags() {
-        tag(BlockTags.MINEABLE_WITH_PICKAXE).add(TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.get());
+        //tag(BlockTags.MINEABLE_WITH_PICKAXE).add(TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.get());
     }
 }

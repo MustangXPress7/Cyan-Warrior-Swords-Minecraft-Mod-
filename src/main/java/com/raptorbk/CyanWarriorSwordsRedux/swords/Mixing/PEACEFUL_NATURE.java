@@ -9,7 +9,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -34,6 +34,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 import javax.annotation.Nullable;
@@ -89,7 +90,7 @@ public class PEACEFUL_NATURE extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.peaceful_nature"));
+        tooltip.add(Component.translatable("tooltip.cwsr.peaceful_nature"));
     }
 
     @Override
@@ -106,7 +107,9 @@ public class PEACEFUL_NATURE extends SWORD_CWSR {
             if (em instanceof LivingEntity && !(em instanceof ArmorStand)){
                 entCountValid=entCountValid+1;
                 BlockPos posTarget = new BlockPos(em.getX(), em.getY()+this.getWebPos(), em.getZ());
-                world.setBlock(posTarget, Blocks.COBWEB.defaultBlockState(),1);
+
+                world.setBlock(posTarget, Blocks.COBWEB.defaultBlockState(),2);
+                world.scheduleTick(posTarget,Blocks.COBWEB.defaultBlockState().getBlock(),0);
             }
 
         }
@@ -153,7 +156,7 @@ currentSword.hurtAndBreak(SwordConfig.PEACEFUL_NATURE_USE_COST.get(),entity,Play
             });
         }
 
-        if(Objects.equals(entity.getOffhandItem().getItem().getRegistryName(), RegistryHandler.combustion_SWORD.getId()) || Objects.equals(entity.getMainHandItem().getItem().getRegistryName(), RegistryHandler.combustion_SWORD.getId())){
+        if(Objects.equals(ForgeRegistries.ITEMS.getKey(entity.getOffhandItem().getItem()), RegistryHandler.combustion_SWORD.getId()) || Objects.equals(ForgeRegistries.ITEMS.getKey(entity.getOffhandItem().getItem()), RegistryHandler.combustion_SWORD.getId())){
             this.setWebPos(1);
         }else{
             this.setWebPos(0);

@@ -7,7 +7,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.ExecuteSeffect;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -25,6 +25,7 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 import javax.annotation.Nullable;
@@ -86,7 +87,7 @@ public class EARTH_SWORD extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.earth_sword"));
+        tooltip.add(Component.translatable("tooltip.cwsr.earth_sword"));
     }
 
     public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {
@@ -99,8 +100,8 @@ currentSword.hurtAndBreak(SwordConfig.EARTH_SWORD_USE_COST.get(),entity,Player -
                 Player.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
         }
-
-        if(Objects.equals(entity.getOffhandItem().getItem().getRegistryName(),RegistryHandler.wild_NATURE.getId())){
+    
+        if(Objects.equals(ForgeRegistries.ITEMS.getKey(entity.getOffhandItem().getItem()),RegistryHandler.wild_NATURE.getId())){
             SWORD_CWSR x = (SWORD_CWSR) entity.getOffhandItem().getItem();
             x.setDamageBool(true);
             x.setBlocker(true);
@@ -111,10 +112,10 @@ currentSword.hurtAndBreak(SwordConfig.EARTH_SWORD_USE_COST.get(),entity,Player -
             }
             return super.use(world,entity,handIn);
         }else{
-            if(Objects.equals(entity.getMainHandItem().getItem().getRegistryName(),RegistryHandler.earth_SWORD)){
+            if(Objects.equals(ForgeRegistries.ITEMS.getKey(entity.getOffhandItem().getItem()),RegistryHandler.earth_SWORD)){
                 return callerRC(world,entity,handIn,RegistryHandler.earth_SWORD.getId(),SwordConfig.EARTH_SWORD_COOLDOWN.get());
             }else{
-                if(Objects.equals(entity.getMainHandItem().getItem().getRegistryName(),RegistryHandler.water_SWORD)){
+                if(Objects.equals(ForgeRegistries.ITEMS.getKey(entity.getOffhandItem().getItem()),RegistryHandler.water_SWORD)){
                     return super.use(world,entity,handIn);
                 }else{
                     return callerRC(world,entity,handIn,RegistryHandler.earth_SWORD.getId(),SwordConfig.EARTH_SWORD_COOLDOWN.get());
@@ -151,7 +152,7 @@ currentSword.hurtAndBreak(SwordConfig.EARTH_SWORD_USE_COST.get(),entity,Player -
                 Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
-                if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.earth_SWORD.getId())){
+                if(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()), RegistryHandler.earth_SWORD.getId())){
                     addEffectsTick(playerIn);
                 }
             }

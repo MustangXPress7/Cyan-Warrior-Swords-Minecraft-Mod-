@@ -4,11 +4,11 @@ package com.raptorbk.CyanWarriorSwordsRedux.blocks.transmutationfurnace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -47,7 +47,7 @@ public class TransmutationFurnaceBlock extends HorizontalDirectionalBlock implem
     }
     @Override
     public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable BlockGetter p_49817_, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.transmutation_furnace"));
+        tooltip.add(Component.translatable("tooltip.cwsr.transmutation_furnace"));
     }
 
     @Override
@@ -83,7 +83,7 @@ public class TransmutationFurnaceBlock extends HorizontalDirectionalBlock implem
         if (!level.isClientSide) {
             BlockEntity tileEntity = level.getBlockEntity(pos);
             if (tileEntity instanceof MenuProvider) {
-                NetworkHooks.openGui((ServerPlayer) playerIn, (MenuProvider) tileEntity, tileEntity.getBlockPos());
+                NetworkHooks.openScreen((ServerPlayer) playerIn, (MenuProvider) tileEntity, tileEntity.getBlockPos());
             }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
@@ -95,8 +95,9 @@ public class TransmutationFurnaceBlock extends HorizontalDirectionalBlock implem
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
+
     @Override
-    public void tick(BlockState p_225534_1_, ServerLevel level, BlockPos pos, Random p_225534_4_) {
+    public void animateTick(BlockState p_225534_1_, Level level, BlockPos pos, RandomSource p_225534_4_) {
         double x = pos.getX() + 0.5;
         double y = pos.getY() + 0.5;
         double z = pos.getZ() + 0.5;

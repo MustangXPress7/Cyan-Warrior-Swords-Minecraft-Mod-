@@ -12,10 +12,10 @@ import net.minecraft.world.inventory.RecipeBookType;
 public class TransmutationFurnaceMenu extends AbstractFurnaceMenu {
 
     public TransmutationFurnaceMenu(int windowId, Inventory playerInv){
-        super(ModMenus.TRANSMUTATION.get(), CyanWarriorSwordsRecipeType.TRANSMUTATION, RecipeBookType.BLAST_FURNACE,windowId,playerInv);
+        super(ModMenus.TRANSMUTATION.get(), CyanWarriorSwordsRecipeType.TRANSMUTATION.get(), RecipeBookType.BLAST_FURNACE,windowId,playerInv);
     }
 
     public TransmutationFurnaceMenu(int windowId, Inventory playerInv, Container tile, ContainerData dataSlots) {
-        super(ModMenus.TRANSMUTATION.get(), CyanWarriorSwordsRecipeType.TRANSMUTATION, RecipeBookType.BLAST_FURNACE, windowId, playerInv, tile, dataSlots);
+        super(ModMenus.TRANSMUTATION.get(), CyanWarriorSwordsRecipeType.TRANSMUTATION.get(), RecipeBookType.BLAST_FURNACE, windowId, playerInv, tile, dataSlots);
     }
 }

@@ -1,26 +1,29 @@
 package com.raptorbk.CyanWarriorSwordsRedux.compat.transmutation;
 
+
 import com.raptorbk.CyanWarriorSwordsRedux.CyanWarriorSwordsReduxMod;
 import com.raptorbk.CyanWarriorSwordsRedux.blocks.transmutationfurnace.TransmutationFurnaceBlocks;
 import com.raptorbk.CyanWarriorSwordsRedux.recipes.TransmutationRecipe;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
 
 public class TransmutationRecipeCategory implements IRecipeCategory<TransmutationRecipe> {
-    private static final int OUTPUT_SLOT = 0;
-    private static final int INPUT_SLOT = 1;
+    public static final RecipeType<TransmutationRecipe> RECIPE_TYPE = RecipeType.create(CyanWarriorSwordsReduxMod.MOD_ID, "transmutation", TransmutationRecipe.class);
+
+
     public static final ResourceLocation UID = CyanWarriorSwordsReduxMod.rl("transmutation");
     public static final ResourceLocation BACKGROUNDRL = CyanWarriorSwordsReduxMod.rl("gui/jei/transmutation_furnace.png");
 
@@ -30,17 +33,10 @@ public class TransmutationRecipeCategory implements IRecipeCategory<Transmutatio
 
     public TransmutationRecipeCategory(IGuiHelper guiHelper)
     {
-        icon = guiHelper.createDrawableIngredient(new ItemStack(TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.get().asItem()));
+        icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,new ItemStack(TransmutationFurnaceBlocks.TRANSMUTATION_FURNACE.get().asItem()));
         background = guiHelper.createDrawable(BACKGROUNDRL, 0, 0, 170, 167);
-//		craftingGridHelper = guiHelper.createCraftingGridHelper(INPUT_SLOT);
     }
 
-    @Nonnull
-    @Override
-    public ResourceLocation getUid()
-    {
-        return UID;
-    }
 
 
 
@@ -48,7 +44,7 @@ public class TransmutationRecipeCategory implements IRecipeCategory<Transmutatio
     @Override
     public Component getTitle()
     {
-        Component string_title_jei_transmutation_category=new TranslatableComponent("jei.cwsr.titles.transmutation");
+        Component string_title_jei_transmutation_category=Component.translatable("jei.cwsr.titles.transmutation");
         return string_title_jei_transmutation_category;
     }
 
@@ -67,29 +63,28 @@ public class TransmutationRecipeCategory implements IRecipeCategory<Transmutatio
     }
 
 
-
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull TransmutationRecipe recipe, @Nonnull IIngredients ingredients)
+    public RecipeType<TransmutationRecipe> getRecipeType()
     {
-        IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-
-        recipeLayout.getItemStacks().init(OUTPUT_SLOT, false, 115, 34);
-        recipeLayout.getItemStacks().init(INPUT_SLOT, true, 55, 16);
-
-        guiItemStacks.set(ingredients);
+        return RECIPE_TYPE;
     }
 
-    @Override
-    public Class<? extends TransmutationRecipe> getRecipeClass()
-    {
-        return TransmutationRecipe.class;
-    }
+
+
 
     @Override
-    public void setIngredients(TransmutationRecipe recipe, IIngredients ingredients)
+    public void setRecipe(@Nonnull IRecipeLayoutBuilder recipeLayout, @Nonnull TransmutationRecipe recipe, @Nonnull IFocusGroup ingredients)
     {
-        ingredients.setInputIngredients(recipe.getIngredients());
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
+
+        recipeLayout.addSlot(RecipeIngredientRole.OUTPUT, 115, 34).addItemStack(recipe.getResultItem());
+        recipeLayout.addSlot(RecipeIngredientRole.INPUT, 55, 16).addIngredients(recipe.getIngredients().get(0));
+
     }
+
+
+
+
+
+
 
 }

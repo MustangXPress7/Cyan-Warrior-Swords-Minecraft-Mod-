@@ -25,6 +25,7 @@ import net.minecraft.world.item.SwordItem;
 
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 import java.util.List;
@@ -204,7 +205,7 @@ public class SWORD_CWSR extends SwordItem {
 
 
 
-        if(Objects.equals(MainHandItem.getItem().getRegistryName(), swordCH)){
+        if(Objects.equals(ForgeRegistries.ITEMS.getKey(MainHandItem.getItem()), swordCH)){
             ReturnableItem=MainHandItem;
         }else{
             ReturnableItem=OffHandItem;
@@ -239,7 +240,7 @@ public class SWORD_CWSR extends SwordItem {
 
         //Si la espada se encuentra en la mano izquierda pero hay otra en la derecha, la derecha se encarga de todo
 
-        if(Objects.equals(OffHandItem.getItem().getRegistryName(), swordCH)   && MainHandItem.getItem() instanceof SWORD_CWSR & !(Objects.equals(OffHandItem.getItem().getRegistryName(),MainHandItem.getItem().getRegistryName()))){
+        if(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()), swordCH)   && MainHandItem.getItem() instanceof SWORD_CWSR & !(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()),ForgeRegistries.ITEMS.getKey(MainHandItem.getItem())))){
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, ReturnableItem);
         }
 
@@ -251,7 +252,7 @@ public class SWORD_CWSR extends SwordItem {
             }else if (MainHandItem.getItem() instanceof SWORD_CWSR && OffHandItem.getItem() instanceof SWORD_CWSR){{  //Las dos son espadas cwsr
                 if(!(entity.getCooldowns().isOnCooldown(OffHandItem.getItem()))){
                     if(entity.getInventory().contains(ActiveSynergyTotemStack)){
-                        if(!(Objects.equals(OffHandItem.getItem().getRegistryName(),MainHandItem.getItem().getRegistryName()))){
+                        if(!(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()),ForgeRegistries.ITEMS.getKey(MainHandItem.getItem())))){
                             if(!blocker){
                                 ((SWORD_CWSR) OffHandItem.getItem()).setDamagePU();
                                 OffHandItem.hurtAndBreak(((SWORD_CWSR) OffHandItem.getItem()).getDamagePU(),entity,Player -> Player.broadcastBreakEvent(EquipmentSlot.OFFHAND));

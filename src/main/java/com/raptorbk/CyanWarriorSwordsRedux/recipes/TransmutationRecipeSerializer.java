@@ -13,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
-public class TransmutationRecipeSerializer<T extends TransmutationRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
+public class TransmutationRecipeSerializer<T extends TransmutationRecipe>  implements RecipeSerializer<T> {
 
     private final int cookingTime;
     private final TransmutationRecipeSerializer.IFactory<T> iBlastRecipeFactory;

@@ -9,7 +9,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,6 +39,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 import javax.annotation.Nullable;
@@ -97,7 +98,7 @@ public class ENDER_WIND extends ENDER_CLASS_SWORD {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.ender_wind"));
+        tooltip.add(Component.translatable("tooltip.cwsr.ender_wind"));
     }
 
     @Override
@@ -111,7 +112,7 @@ public class ENDER_WIND extends ENDER_CLASS_SWORD {
 
 
         ItemStack itemstack = new ItemStack(Items.ENDER_PEARL);
-        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(new Random(),0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
 
 
         ItemStack currentSword = entity.getItemInHand(handIn);
@@ -173,7 +174,7 @@ public class ENDER_WIND extends ENDER_CLASS_SWORD {
                         world.addFreshEntity(enderpearlentity);
                     }
                 }else{
-                    if((Objects.equals(entity.getMainHandItem().getItem().getRegistryName(),RegistryHandler.meteor_SWORD.getId()) || Objects.equals(entity.getOffhandItem().getItem().getRegistryName(),RegistryHandler.meteor_SWORD.getId())) || (Objects.equals(entity.getMainHandItem().getItem().getRegistryName(),RegistryHandler.meteoric_THUNDERSTORM.getId()) || Objects.equals(entity.getOffhandItem().getItem().getRegistryName(),RegistryHandler.meteoric_THUNDERSTORM.getId()))  ){
+                    if((Objects.equals(ForgeRegistries.ITEMS.getKey(entity.getOffhandItem().getItem()),RegistryHandler.meteor_SWORD.getId()) || Objects.equals(ForgeRegistries.ITEMS.getKey(entity.getOffhandItem().getItem()),RegistryHandler.meteor_SWORD.getId())) || (Objects.equals(ForgeRegistries.ITEMS.getKey(entity.getOffhandItem().getItem()),RegistryHandler.meteoric_THUNDERSTORM.getId()) || Objects.equals(ForgeRegistries.ITEMS.getKey(entity.getOffhandItem().getItem()),RegistryHandler.meteoric_THUNDERSTORM.getId()))  ){
                         this.setDelayThrow(true);
                         this.setThrowEnder(enderpearlentity);
                     }else{
@@ -261,7 +262,7 @@ ogSword.hurtAndBreak(SwordConfig.ENDER_WIND_USE_COST.get(),entity,Player -> {
                 Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
-                if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.ender_WIND.getId())){
+                if(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()), RegistryHandler.ender_WIND.getId())){
                     addEffectsTick(playerIn);
                 }
             }

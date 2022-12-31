@@ -10,12 +10,12 @@ import com.sun.jna.Structure;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ConfiguredStructureTags;
+import net.minecraft.tags.StructureTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -35,7 +35,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.phys.HitResult;
 
 
@@ -93,7 +92,7 @@ public class ENDER_PORTAL extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.ender_portal"));
+        tooltip.add(Component.translatable("tooltip.cwsr.ender_portal"));
     }
 
     @Override
@@ -108,7 +107,7 @@ public class ENDER_PORTAL extends SWORD_CWSR {
 
             entity.startUsingItem(handIn);
             if (world instanceof ServerLevel) {
-                BlockPos blockpos = ((ServerLevel) world).findNearestMapFeature(ConfiguredStructureTags.EYE_OF_ENDER_LOCATED, entity.blockPosition(), 100, false);
+                BlockPos blockpos = ((ServerLevel) world).findNearestMapStructure(StructureTags.EYE_OF_ENDER_LOCATED, entity.blockPosition(), 100, false);
                 if (blockpos != null) {
                     EyeOfEnder eyeofenderentity = new EyeOfEnder(world, entity.getX(), entity.getY(0.5D), entity.getZ());
                     eyeofenderentity.setItem(itemstack);
@@ -118,7 +117,7 @@ public class ENDER_PORTAL extends SWORD_CWSR {
                         CriteriaTriggers.USED_ENDER_EYE.trigger((ServerPlayer)entity, blockpos);
                     }
 
-                    world.playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_EYE_LAUNCH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(new Random(),0.0F,1.0F) * 0.4F + 0.8F));
+                    world.playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_EYE_LAUNCH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
                     world.levelEvent((Player)null, 1003, entity.blockPosition(), 0);
                     if (!entity.getAbilities().instabuild) {
                         itemstack.shrink(0);
@@ -187,6 +186,7 @@ ogSword.hurtAndBreak(SwordConfig.ENDER_PORTAL_SWORD_USE_COST.get(),entity,Player
         Level worldIn = attacker.getCommandSenderWorld();
         Random pushRNG = new Random();
         int gameRNG = pushRNG.nextInt(100);
+
         if(gameRNG < 25){
             worldIn.playSound((Player) null, target.getX(), target.getY(), target.getZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, SoundSource.NEUTRAL, 1.0F, 0.4F);
             target.playSound(SoundEvents.CHORUS_FRUIT_TELEPORT, 1.0F, 1.0F);
@@ -196,13 +196,13 @@ ogSword.hurtAndBreak(SwordConfig.ENDER_PORTAL_SWORD_USE_COST.get(),entity,Player
 
         }else{
             ItemStack itemstack = new ItemStack(Items.CHORUS_FRUIT);
-            ChorusFruitItem X = new ChorusFruitItem(new Properties());
-            X.finishUsingItem(itemstack,worldIn,target);
+            itemstack.finishUsingItem(worldIn,target);
             itemstack=stack;
         }
 
         Random r = new Random();
         int game = r.nextInt(100);
+
         if(game < 85){
             return true;
         }else{

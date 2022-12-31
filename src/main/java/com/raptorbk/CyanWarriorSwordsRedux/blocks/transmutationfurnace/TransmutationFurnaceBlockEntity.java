@@ -4,7 +4,6 @@ import com.raptorbk.CyanWarriorSwordsRedux.Menus.TransmutationFurnaceMenu;
 import com.raptorbk.CyanWarriorSwordsRedux.recipes.CyanWarriorSwordsRecipeType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
@@ -19,15 +18,15 @@ public class TransmutationFurnaceBlockEntity extends AbstractFurnaceBlockEntity 
     private AbstractCookingRecipe recipeType;
 
     protected TransmutationFurnaceBlockEntity(BlockPos pos, BlockState state) {
-        super(TransmutationFurnaceTileEntities.TRANSMUTATION_FURNACE.get(), pos, state, CyanWarriorSwordsRecipeType.TRANSMUTATION );
+        super(TransmutationFurnaceTileEntities.TRANSMUTATION_FURNACE.get(), pos, state, CyanWarriorSwordsRecipeType.TRANSMUTATION.get() );
     }
 
 
 
     @Override
     protected Component getDefaultName() {
-        Component titleUI=new TranslatableComponent("ui.cwsr.transfurnace.title");
-        return new TranslatableComponent(titleUI.getString());
+        Component titleUI=Component.translatable("ui.cwsr.transfurnace.title");
+        return Component.translatable(titleUI.getString());
     }
 
     @Override

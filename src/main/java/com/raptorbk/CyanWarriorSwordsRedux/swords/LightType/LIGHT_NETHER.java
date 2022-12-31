@@ -7,7 +7,7 @@ import com.raptorbk.CyanWarriorSwordsRedux.util.ModTrigger;
 import com.raptorbk.CyanWarriorSwordsRedux.util.RegistryHandler;
 import com.raptorbk.CyanWarriorSwordsRedux.util.SurroundEffect;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -32,6 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import net.minecraft.util.*;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 import javax.annotation.Nullable;
@@ -88,7 +89,7 @@ public class LIGHT_NETHER extends SWORD_CWSR {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(new TranslatableComponent("tooltip.cwsr.light_nether"));
+        tooltip.add(Component.translatable("tooltip.cwsr.light_nether"));
     }
 
     @Override
@@ -97,7 +98,7 @@ public class LIGHT_NETHER extends SWORD_CWSR {
 
 
 
-        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLAZE_AMBIENT, SoundSource.NEUTRAL, 1.0F, 0.4F / (Mth.nextFloat(new Random(),0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLAZE_AMBIENT, SoundSource.NEUTRAL, 1.0F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
 
         entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION,60,2));
         entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION,600,4));
@@ -174,7 +175,7 @@ currentSword.hurtAndBreak(SwordConfig.LIGHT_NETHER_SWORD_USE_COST.get(), entity,
                 Player playerIn = (Player) entityIn;
 
                 ItemStack OffHandItem = playerIn.getOffhandItem();
-                if(Objects.equals(OffHandItem.getItem().getRegistryName(), RegistryHandler.light_NETHER.getId())){
+                if(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()), RegistryHandler.light_NETHER.getId())){
                     addEffectsTick(playerIn);
                 }
             }
