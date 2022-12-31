@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>README.txt</title>
 </head>
 <body>
 
 
-<img src="https://media.forgecdn.net/avatars/300/791/637359574661459641.png">
+![cwsr](https://i.imgur.com/Bsw0yMO.png)
+
+
 <br>
 <p>Wiki: <a href="https://www.curseforge.com/minecraft/mc-mods/cyan-warrior-swords-mod/pages/wiki-115-112">HERE</a></p>
 <br>
