@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "cwsr:items/active_synergy_totem"
+    "layer0": "cwsr:item/active_synergy_totem"
   }
 }

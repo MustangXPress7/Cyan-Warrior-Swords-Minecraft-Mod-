@@ -73,7 +73,7 @@ public class WIND_BLAST extends SWORD_CWSR {
     };
 
     public WIND_BLAST() {
-        super(iItemTier, SwordConfig.WIND_BLAST_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.WIND_BLAST_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){
@@ -107,7 +107,7 @@ public class WIND_BLAST extends SWORD_CWSR {
             Entity em = e.get(i);
             if (em instanceof LivingEntity && !(em instanceof ArmorStand)){
                 entCountValid=entCountValid+1;
-                world.explode(entity,em.getX(),em.getY(),em.getZ(),0.5F, Explosion.BlockInteraction.NONE);
+                world.explode(entity,em.getX(),em.getY(),em.getZ(),0.5F, Level.ExplosionInteraction.NONE);
             }
         }
 

@@ -34,6 +34,6 @@ public class DarkEssence extends Item{
     }
 
     public DarkEssence() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 }

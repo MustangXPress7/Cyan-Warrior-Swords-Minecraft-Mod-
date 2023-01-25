@@ -73,7 +73,7 @@ public class ENDER_THUNDER extends ENDER_CLASS_SWORD {
     };
 
     public ENDER_THUNDER() {
-        super(iItemTier, SwordConfig.ENDER_THUNDER_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.ENDER_THUNDER_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){

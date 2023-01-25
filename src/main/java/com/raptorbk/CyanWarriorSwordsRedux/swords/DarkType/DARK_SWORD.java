@@ -61,7 +61,7 @@ public class DARK_SWORD extends SWORD_CWSR {
     };
 
     public DARK_SWORD() {
-        super(iItemTier, SwordConfig.DARK_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.DARK_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     @Override

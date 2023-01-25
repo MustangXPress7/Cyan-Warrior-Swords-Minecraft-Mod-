@@ -14,19 +14,15 @@ public abstract class BaseRecipeProvider extends RecipeProvider {
     private final String modid;
 
     public BaseRecipeProvider(DataGenerator gen, String modid){
-        super(gen);
+        super(gen.getPackOutput());
         this.modid = modid;
     }
 
-    @Override
-    public String getName()
-    {
-        return super.getName() + modid;
-    }
+    
 
 
     @Override
-    protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer)
+    protected void buildRecipes(Consumer<FinishedRecipe> consumer)
     {
         getSubRecipeProviders().forEach(subRecipeProvider -> subRecipeProvider.addRecipes(consumer));
     }

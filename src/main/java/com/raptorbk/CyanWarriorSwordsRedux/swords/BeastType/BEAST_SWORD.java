@@ -67,7 +67,7 @@ public class BEAST_SWORD extends SWORD_CWSR {
     };
 
     public BEAST_SWORD() {
-        super(iItemTier, SwordConfig.BEAST_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.BEAST_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
     
     @Override

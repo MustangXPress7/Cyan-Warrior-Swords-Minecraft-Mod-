@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cwsr:items/steam_sword"
+    "layer0": "cwsr:item/steam_sword"
   }
 }

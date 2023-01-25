@@ -14,6 +14,6 @@ import java.util.List;
 
 public class BlockItemBase extends BlockItem {
     public BlockItemBase(Block block){
-        super(block, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(block, new Item.Properties());
     }
 }

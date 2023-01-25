@@ -23,7 +23,8 @@ import java.util.Map;
 public class ABILITY_TOTEM extends Item {
 
     public ABILITY_TOTEM() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
+
     }
 
     public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand handIn) {

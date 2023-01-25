@@ -35,6 +35,6 @@ public class WaterEssence extends Item {
     }
 
     public WaterEssence() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 }

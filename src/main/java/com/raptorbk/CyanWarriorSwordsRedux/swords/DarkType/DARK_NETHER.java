@@ -75,7 +75,7 @@ public class DARK_NETHER extends SWORD_CWSR {
     };
 
     public DARK_NETHER() {
-        super(iItemTier, SwordConfig.DARK_NETHER_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.DARK_NETHER_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     @Override

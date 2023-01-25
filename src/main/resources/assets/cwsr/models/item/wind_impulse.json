@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cwsr:items/wind_impulse"
+    "layer0": "cwsr:item/wind_impulse"
   }
 }

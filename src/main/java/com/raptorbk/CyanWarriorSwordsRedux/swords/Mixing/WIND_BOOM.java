@@ -69,7 +69,7 @@ public class WIND_BOOM extends SWORD_CWSR {
     };
 
     public WIND_BOOM() {
-        super(iItemTier, SwordConfig.WIND_BOOM_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.WIND_BOOM_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){
@@ -95,7 +95,7 @@ public class WIND_BOOM extends SWORD_CWSR {
         entity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING,100,1));
         entity.fallDistance = 0.0F;
 
-        world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),4.0F, Explosion.BlockInteraction.NONE);
+        world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),4.0F, Level.ExplosionInteraction.NONE);
         return new InteractionResultHolder<>(InteractionResult.SUCCESS, currentSword);
     }
 

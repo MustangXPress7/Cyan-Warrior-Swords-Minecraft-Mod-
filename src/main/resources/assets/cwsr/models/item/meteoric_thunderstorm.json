@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cwsr:items/meteoric_thunderstorm"
+    "layer0": "cwsr:item/meteoric_thunderstorm"
   }
 }

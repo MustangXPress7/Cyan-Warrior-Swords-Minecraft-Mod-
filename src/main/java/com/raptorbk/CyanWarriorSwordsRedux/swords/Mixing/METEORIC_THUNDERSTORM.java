@@ -78,7 +78,7 @@ public class METEORIC_THUNDERSTORM extends METEOR_CLASS_SWORD {
     };
 
     public METEORIC_THUNDERSTORM() {
-        super(iItemTier, SwordConfig.METEORIC_THUNDERSTORM_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.METEORIC_THUNDERSTORM_DMG.get(), -2.4F, new Item.Properties());
     }
 
 
@@ -208,7 +208,7 @@ currentSword.hurtAndBreak(SwordConfig.METEORIC_THUNDERSTORM_USE_COST.get(),entit
     public void onCraftedBy(ItemStack stack, Level world, Player entity) {
         unlockSEACH(entity,world);
         world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
-        //world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),1.0F, Explosion.BlockInteraction.NONE);
+        //world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),1.0F, Level.ExplosionInteraction.NONE);
     }
 
 

@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cwsr:items/golem_sword"
+    "layer0": "cwsr:item/golem_sword"
   }
 }

@@ -73,7 +73,7 @@ public class WIND_SWORD extends SWORD_CWSR {
     };
 
     public WIND_SWORD() {
-        super(iItemTier, SwordConfig.WIND_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.WIND_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){

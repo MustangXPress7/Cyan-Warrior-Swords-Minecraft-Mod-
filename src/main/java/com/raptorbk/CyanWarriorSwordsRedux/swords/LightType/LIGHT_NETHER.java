@@ -75,7 +75,7 @@ public class LIGHT_NETHER extends SWORD_CWSR {
     };
 
     public LIGHT_NETHER() {
-        super(iItemTier, SwordConfig.LIGHT_NETHER_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.LIGHT_NETHER_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){

@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cwsr:items/tri_ender"
+    "layer0": "cwsr:item/tri_ender"
   }
 }

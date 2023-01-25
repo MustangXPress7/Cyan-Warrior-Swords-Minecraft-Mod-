@@ -67,7 +67,7 @@ public class ATLANTIS_SWORD extends SWORD_CWSR {
     };
 
     public ATLANTIS_SWORD() {
-        super(iItemTier, SwordConfig.ATLANTIS_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.ATLANTIS_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public void addEffectsTick(Player playerIn){

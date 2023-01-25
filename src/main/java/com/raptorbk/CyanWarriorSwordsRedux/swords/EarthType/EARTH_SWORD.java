@@ -68,7 +68,7 @@ public class EARTH_SWORD extends SWORD_CWSR {
     };
 
     public EARTH_SWORD() {
-        super(iItemTier, SwordConfig.EARTH_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.EARTH_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     @Override

@@ -79,7 +79,7 @@ public class ICE_SWORD extends SWORD_CWSR {
     };
 
     public ICE_SWORD() {
-        super(iItemTier, SwordConfig.ICE_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.ICE_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){

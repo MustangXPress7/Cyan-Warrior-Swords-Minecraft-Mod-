@@ -35,6 +35,6 @@ public class SwordHandle extends Item {
     }
 
     public SwordHandle() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 }

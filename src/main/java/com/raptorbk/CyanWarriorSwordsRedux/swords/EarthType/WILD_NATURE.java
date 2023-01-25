@@ -73,7 +73,7 @@ public class WILD_NATURE extends SWORD_CWSR {
     };
 
     public WILD_NATURE() {
-        super(iItemTier, SwordConfig.WILD_NATURE_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.WILD_NATURE_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){

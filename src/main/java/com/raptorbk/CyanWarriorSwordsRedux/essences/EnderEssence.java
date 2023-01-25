@@ -35,6 +35,6 @@ public class EnderEssence extends Item {
     }
 
     public EnderEssence() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 }

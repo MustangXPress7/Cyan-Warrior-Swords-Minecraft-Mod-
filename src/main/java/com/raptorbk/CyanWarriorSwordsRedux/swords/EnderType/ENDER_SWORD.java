@@ -70,7 +70,7 @@ public class ENDER_SWORD extends ENDER_CLASS_SWORD {
     };
 
     public ENDER_SWORD() {
-        super(iItemTier, SwordConfig.ENDER_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.ENDER_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     @Override

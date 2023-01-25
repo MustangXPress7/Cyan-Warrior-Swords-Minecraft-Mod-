@@ -26,6 +26,6 @@ public class EssenceBase extends Item {
     }
 
     public EssenceBase() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 }

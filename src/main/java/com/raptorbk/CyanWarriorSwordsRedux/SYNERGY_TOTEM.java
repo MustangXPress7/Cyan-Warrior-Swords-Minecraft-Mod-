@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class SYNERGY_TOTEM extends Item {
     public SYNERGY_TOTEM() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 
 

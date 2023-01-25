@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cwsr:items/peaceful_nature"
+    "layer0": "cwsr:item/peaceful_nature"
   }
 }

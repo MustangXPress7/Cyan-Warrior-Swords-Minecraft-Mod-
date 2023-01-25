@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cwsr:items/atlantis_sword"
+    "layer0": "cwsr:item/atlantis_sword"
   }
 }

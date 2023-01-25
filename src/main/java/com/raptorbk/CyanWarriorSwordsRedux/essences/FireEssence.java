@@ -35,6 +35,6 @@ public class FireEssence extends Item {
     }
 
     public FireEssence() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 }

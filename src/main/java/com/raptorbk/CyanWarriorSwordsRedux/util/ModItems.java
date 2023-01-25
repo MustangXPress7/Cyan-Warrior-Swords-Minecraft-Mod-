@@ -17,6 +17,6 @@ public class ModItems {
 
 
     public static RegistryObject<Item> registerBlockItem(RegistryObject<? extends Block> block) {
-        return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB)));
+        return ITEMS.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
     }
 }

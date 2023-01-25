@@ -35,6 +35,6 @@ public class LightEssence extends Item {
     }
 
     public LightEssence() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 }

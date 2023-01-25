@@ -76,7 +76,7 @@ public class PEACEFUL_NATURE extends SWORD_CWSR {
     };
 
     public PEACEFUL_NATURE() {
-        super(iItemTier, SwordConfig.PEACEFUL_NATURE_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.PEACEFUL_NATURE_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){

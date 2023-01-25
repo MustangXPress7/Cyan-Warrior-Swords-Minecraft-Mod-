@@ -79,7 +79,7 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
     };
 
     public THUNDER_SHOCK() {
-        super(iItemTier, SwordConfig.THUNDER_SHOCK_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.THUNDER_SHOCK_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     @Override

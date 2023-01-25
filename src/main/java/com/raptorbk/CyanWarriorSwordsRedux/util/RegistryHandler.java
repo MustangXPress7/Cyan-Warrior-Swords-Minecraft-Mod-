@@ -2,6 +2,7 @@ package com.raptorbk.CyanWarriorSwordsRedux.util;
 
 import com.mojang.serialization.Codec;
 import com.raptorbk.CyanWarriorSwordsRedux.*;
+import com.raptorbk.CyanWarriorSwordsRedux.blocks.transmutationfurnace.TransmutationFurnaceBlocks;
 import com.raptorbk.CyanWarriorSwordsRedux.essences.*;
 import com.raptorbk.CyanWarriorSwordsRedux.items.SwordHandle;
 import com.raptorbk.CyanWarriorSwordsRedux.swords.BeastType.BEAST_SWORD;
@@ -25,25 +26,35 @@ import com.raptorbk.CyanWarriorSwordsRedux.swords.WaterType.ICE_SWORD;
 import com.raptorbk.CyanWarriorSwordsRedux.swords.WaterType.WATER_SWORD;
 import com.raptorbk.CyanWarriorSwordsRedux.swords.WindType.WIND_IMPULSE;
 import com.raptorbk.CyanWarriorSwordsRedux.swords.WindType.WIND_SWORD;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
+import net.minecraftforge.event.CreativeModeTabEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.List;
+import java.util.stream.Stream;
+
+import static com.raptorbk.CyanWarriorSwordsRedux.CyanWarriorSwordsReduxMod.MOD_ID;
+
 public class RegistryHandler {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, CyanWarriorSwordsReduxMod.MOD_ID);
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, CyanWarriorSwordsReduxMod.MOD_ID);
-    public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, CyanWarriorSwordsReduxMod.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MOD_ID);
+    public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, MOD_ID);
 
 
-    public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, CyanWarriorSwordsReduxMod.MOD_ID);
+    public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> LOOT_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, MOD_ID);
 
 
 
@@ -213,5 +224,122 @@ public class RegistryHandler {
     });
 
     public static final RegistryObject<Codec<CyanWarriorSwordsLootModifier>> CWSR_LOOT_MODIFIER = LOOT_MODIFIERS.register("cwsr_loot_modifier", CyanWarriorSwordsLootModifier.CODEC);
+    public static CreativeModeTab CYANWARRIOR_TAB;
 
+    public static final List<RegistryObject<? extends Item>> CUSTOM_CREATIVE_TAB_ITEMS = List.of(
+
+            RegistryHandler.fire_SWORD,
+            RegistryHandler.water_SWORD,
+            RegistryHandler.earth_SWORD,
+            RegistryHandler.wind_SWORD,
+            RegistryHandler.thunder_SWORD,
+            RegistryHandler.dark_SWORD,
+            RegistryHandler.light_SWORD,
+            RegistryHandler.ender_SWORD,
+            RegistryHandler.beast_SWORD,
+            RegistryHandler.combustion_SWORD,
+            RegistryHandler.ice_SWORD,
+            RegistryHandler.wild_NATURE,
+            RegistryHandler.wind_IMPULSE,
+            RegistryHandler.thunder_SHOCK,
+            RegistryHandler.dark_NETHER,
+            RegistryHandler.light_NETHER,
+            RegistryHandler.ender_PORTAL,
+            RegistryHandler.golem_SWORD,
+            RegistryHandler.ender_FIRE,
+            RegistryHandler.ender_WIND,
+            RegistryHandler.ender_THUNDER,
+            RegistryHandler.peaceful_NATURE,
+            RegistryHandler.time_SWORD,
+            RegistryHandler.steam_SWORD,
+            RegistryHandler.meteor_SWORD,
+            RegistryHandler.wind_BLAST,
+            RegistryHandler.wind_BOOM,
+            RegistryHandler.thunderstorm_SWORD,
+            RegistryHandler.meteoric_THUNDERSTORM,
+            RegistryHandler.tri_ENDER,
+            RegistryHandler.atlantis_SWORD,
+            RegistryHandler.cyan_SWORD,
+            ModItems.TRANSMUTATION_FURNACE,
+            RegistryHandler.earth_ESSENCE,
+            RegistryHandler.beast_ESSENCE,
+            RegistryHandler.dark_ESSENCE,
+            RegistryHandler.ender_ESSENCE,
+            RegistryHandler.fire_ESSENCE,
+            RegistryHandler.thunder_ESSENCE,
+            RegistryHandler.water_ESSENCE,
+            RegistryHandler.wind_ESSENCE,
+            RegistryHandler.light_ESSENCE,
+            RegistryHandler.mixed_ESSENCE,
+            RegistryHandler.sword_HANDLE,
+            RegistryHandler.ability_TOTEM,
+            RegistryHandler.synergy_TOTEM,
+            RegistryHandler.active_synergy_TOTEM
+
+    );
+    public static void registerCreativeModeTab(CreativeModeTabEvent.Register event) {
+
+        CYANWARRIOR_TAB = event.registerCreativeModeTab(new ResourceLocation(MOD_ID, "main_tab"),
+                builder -> builder.icon(() -> RegistryHandler.cyan_SWORD.get().getDefaultInstance())
+                        .title(Component.translatable("CreativeModeTab.cwsrTab"))
+                        .withLabelColor(0x664400)
+                        .displayItems((features, output, hasPermissions) ->
+                                output.acceptAll(CUSTOM_CREATIVE_TAB_ITEMS.stream().map(item -> item.get().getDefaultInstance()).toList())
+                        )
+        );
+    }
+
+    public static void addToCreativeModeTabs(CreativeModeTabEvent.BuildContents event) {
+        if (event.getTab() == CreativeModeTabs.COMBAT) {
+            event.acceptAll(Stream.of(
+                    RegistryHandler.fire_SWORD,
+                    RegistryHandler.water_SWORD,
+                    RegistryHandler.earth_SWORD,
+                    RegistryHandler.wind_SWORD,
+                    RegistryHandler.thunder_SWORD,
+                    RegistryHandler.dark_SWORD,
+                    RegistryHandler.light_SWORD,
+                    RegistryHandler.ender_SWORD,
+                    RegistryHandler.beast_SWORD,
+                    RegistryHandler.combustion_SWORD,
+                    RegistryHandler.ice_SWORD,
+                    RegistryHandler.wild_NATURE,
+                    RegistryHandler.wind_IMPULSE,
+                    RegistryHandler.thunder_SHOCK,
+                    RegistryHandler.dark_NETHER,
+                    RegistryHandler.light_NETHER,
+                    RegistryHandler.ender_PORTAL,
+                    RegistryHandler.golem_SWORD,
+                    RegistryHandler.ender_FIRE,
+                    RegistryHandler.ender_WIND,
+                    RegistryHandler.ender_THUNDER,
+                    RegistryHandler.peaceful_NATURE,
+                    RegistryHandler.time_SWORD,
+                    RegistryHandler.steam_SWORD,
+                    RegistryHandler.meteor_SWORD,
+                    RegistryHandler.wind_BLAST,
+                    RegistryHandler.wind_BOOM,
+                    RegistryHandler.thunderstorm_SWORD,
+                    RegistryHandler.meteoric_THUNDERSTORM,
+                    RegistryHandler.tri_ENDER,
+                    RegistryHandler.atlantis_SWORD,
+                    RegistryHandler.cyan_SWORD,
+                    ModItems.TRANSMUTATION_FURNACE,
+                    RegistryHandler.earth_ESSENCE,
+                    RegistryHandler.beast_ESSENCE,
+                    RegistryHandler.dark_ESSENCE,
+                    RegistryHandler.ender_ESSENCE,
+                    RegistryHandler.fire_ESSENCE,
+                    RegistryHandler.thunder_ESSENCE,
+                    RegistryHandler.water_ESSENCE,
+                    RegistryHandler.wind_ESSENCE,
+                    RegistryHandler.light_ESSENCE,
+                    RegistryHandler.mixed_ESSENCE,
+                    RegistryHandler.sword_HANDLE,
+                    RegistryHandler.ability_TOTEM,
+                    RegistryHandler.synergy_TOTEM,
+                    RegistryHandler.active_synergy_TOTEM
+            ).map(item -> item.get().getDefaultInstance()).toList());
+        }
+    }
 }

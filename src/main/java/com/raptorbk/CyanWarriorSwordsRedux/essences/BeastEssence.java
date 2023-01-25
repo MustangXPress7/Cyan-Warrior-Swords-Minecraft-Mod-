@@ -35,6 +35,6 @@ public class BeastEssence extends Item {
     }
 
     public BeastEssence() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 }

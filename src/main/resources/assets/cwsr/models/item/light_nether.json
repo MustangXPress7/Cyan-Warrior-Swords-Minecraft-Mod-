@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cwsr:items/light_nether"
+    "layer0": "cwsr:item/light_nether"
   }
 }

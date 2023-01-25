@@ -72,7 +72,7 @@ public class WIND_IMPULSE extends SWORD_CWSR {
     };
 
     public WIND_IMPULSE() {
-        super(iItemTier, SwordConfig.WIND_IMPULSE_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.WIND_IMPULSE_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){

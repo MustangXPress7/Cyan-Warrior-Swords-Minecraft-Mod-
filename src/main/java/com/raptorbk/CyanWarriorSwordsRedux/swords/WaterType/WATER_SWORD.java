@@ -69,7 +69,7 @@ public class WATER_SWORD extends SWORD_CWSR {
     };
 
     public WATER_SWORD() {
-        super(iItemTier, SwordConfig.WATER_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.WATER_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){

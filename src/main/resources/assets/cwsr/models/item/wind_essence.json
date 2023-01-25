@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "cwsr:items/wind_essence"
+    "layer0": "cwsr:item/wind_essence"
   }
 }

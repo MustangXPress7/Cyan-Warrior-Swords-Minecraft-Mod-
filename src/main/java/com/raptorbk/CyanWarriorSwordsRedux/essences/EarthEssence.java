@@ -35,6 +35,6 @@ public class EarthEssence extends Item {
     }
 
     public EarthEssence() {
-        super(new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(new Item.Properties());
     }
 }

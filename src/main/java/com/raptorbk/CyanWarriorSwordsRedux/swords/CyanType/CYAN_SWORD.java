@@ -69,7 +69,7 @@ public class CYAN_SWORD extends SWORD_CWSR {
     };
 
     public CYAN_SWORD() {
-        super(iItemTier, SwordConfig.CYAN_SWORD_DMG.get(), 0.0F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.CYAN_SWORD_DMG.get(), 0.0F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){

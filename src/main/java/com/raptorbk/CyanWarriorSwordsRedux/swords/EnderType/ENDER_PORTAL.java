@@ -78,7 +78,7 @@ public class ENDER_PORTAL extends SWORD_CWSR {
     };
 
     public ENDER_PORTAL() {
-        super(iItemTier, SwordConfig.ENDER_PORTAL_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.ENDER_PORTAL_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk) {

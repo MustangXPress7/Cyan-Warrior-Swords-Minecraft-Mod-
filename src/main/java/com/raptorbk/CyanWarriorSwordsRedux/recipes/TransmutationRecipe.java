@@ -6,10 +6,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 
 public class TransmutationRecipe extends AbstractCookingRecipe {
@@ -23,7 +20,7 @@ public class TransmutationRecipe extends AbstractCookingRecipe {
     public final int cookTime;
 
     public TransmutationRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
-        super(CyanWarriorSwordsRecipeType.TRANSMUTATION.get(), idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
+        super(CyanWarriorSwordsRecipeType.TRANSMUTATION.get(), idIn, groupIn, CookingBookCategory.MISC,ingredientIn, resultIn, experienceIn, cookTimeIn);
 
         this.id = idIn;
         this.tab = groupIn;

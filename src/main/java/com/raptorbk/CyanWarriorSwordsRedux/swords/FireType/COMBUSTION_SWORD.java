@@ -84,7 +84,7 @@ public class COMBUSTION_SWORD extends SWORD_CWSR {
     };
 
     public COMBUSTION_SWORD() {
-        super(iItemTier, SwordConfig.COMBUSTION_SWORD_DMG.get(), -2.4F, new Item.Properties().tab(CyanWarriorSwordsReduxMod.TAB));
+        super(iItemTier, SwordConfig.COMBUSTION_SWORD_DMG.get(), -2.4F, new Item.Properties());
     }
 
     public static void callEffect(SurroundEffect seffect, Level world, Player entity, InteractionHand handIn, Block blk){
@@ -199,7 +199,7 @@ currentSword.hurtAndBreak(SwordConfig.COMBUSTION_SWORD_USE_COST.get(),entity,Pla
     public void onCraftedBy(ItemStack stack, Level world, Player entity) {
         unlockSEACH(entity,world);
         world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
-        //world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),1.0F, Explosion.BlockInteraction.NONE);
+        //world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),1.0F, Level.ExplosionInteraction.NONE);
     }
 
     public void addEffectsTick(Player playerIn){

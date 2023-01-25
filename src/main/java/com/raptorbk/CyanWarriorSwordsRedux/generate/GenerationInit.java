@@ -17,11 +17,11 @@ public class GenerationInit {
         DataGenerator gen = event.getGenerator();
         ExistingFileHelper helper = event.getExistingFileHelper();
 
-        BlockTagsProvider blockTags = new BlockTagsProvider(gen, helper);
+
 
         gen.addProvider(event.includeServer(),new CyanWarriorSwordsRecipesProvider(gen));
         //gen.addProvider(event.includeServer(),new ModLootModifierProvider(gen));
-        gen.addProvider(event.includeServer(), blockTags);
+
         //gen.addProvider(event.includeServer(), new LootTableProvider(gen));
 
     }

@@ -1,6 +1,6 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "cwsr:items/ender_thunder"
+    "layer0": "cwsr:item/ender_thunder"
   }
 }
