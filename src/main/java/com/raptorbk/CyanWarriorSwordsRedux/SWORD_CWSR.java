@@ -181,6 +181,7 @@ public class SWORD_CWSR extends SwordItem {
     public boolean checkINH(ItemStack totemItem){
         Map<Enchantment, Integer> xEnc= EnchantmentHelper.getEnchantments(totemItem);
         if(xEnc.containsKey(RegistryHandler.inh_ENCHANTMENT.get())){
+
             return true;
         }else{
             return false;
@@ -212,13 +213,19 @@ public class SWORD_CWSR extends SwordItem {
         }
 
         ItemStack ActiveSynergyTotemStack = new ItemStack(RegistryHandler.active_synergy_TOTEM.get(),1);
+        System.out.println(ActiveSynergyTotemStack);
 
         List<ItemStack> listItems = entity.getInventory().items;
+
         boolean isINH=false;
+        boolean dhenabled=false;
         int totemHits=0;
         for (ItemStack temp : listItems) {
             if(totemHits==2){
                 break;
+            }
+            if(temp.getItem() instanceof ACTIVE_SYNERGY_TOTEM){
+                dhenabled=true;
             }
             if(temp.getItem() instanceof ABILITY_TOTEM || temp.getItem() instanceof SYNERGY_TOTEM || temp.getItem() instanceof ACTIVE_SYNERGY_TOTEM){
                 totemHits=totemHits+1;
@@ -250,8 +257,10 @@ public class SWORD_CWSR extends SwordItem {
 
                 return eventRC(world,entity,handIn,ReturnableItem);
             }else if (MainHandItem.getItem() instanceof SWORD_CWSR && OffHandItem.getItem() instanceof SWORD_CWSR){{  //Las dos son espadas cwsr
+
                 if(!(entity.getCooldowns().isOnCooldown(OffHandItem.getItem()))){
-                    if(entity.getInventory().contains(ActiveSynergyTotemStack)){
+
+                    if(dhenabled){
                         if(!(Objects.equals(ForgeRegistries.ITEMS.getKey(OffHandItem.getItem()),ForgeRegistries.ITEMS.getKey(MainHandItem.getItem())))){
                             if(!blocker){
                                 ((SWORD_CWSR) OffHandItem.getItem()).setDamagePU();
