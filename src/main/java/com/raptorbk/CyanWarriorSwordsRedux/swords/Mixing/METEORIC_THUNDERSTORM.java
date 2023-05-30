@@ -115,7 +115,7 @@ public class METEORIC_THUNDERSTORM extends METEOR_CLASS_SWORD {
         LargeFireball LargeFireball = new LargeFireball(world, entity,vec3.x,vec3.y,vec3.z,fireballStrength);
         LargeFireball.setXRot(entity.getXRot());
         LargeFireball.setYRot(entity.getYRot());
-        LargeFireball.setPos(entity.getX(),entity.getY()+2,entity.getZ());
+        LargeFireball.setPos((int) Math.round(entity.getX()),entity.getY()+2,entity.getZ());
         LargeFireball.xPower=vec3.x;
         LargeFireball.yPower=vec3.y;
         LargeFireball.zPower=vec3.z;
@@ -141,7 +141,7 @@ public class METEORIC_THUNDERSTORM extends METEOR_CLASS_SWORD {
 
 
         LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt.moveTo(entity.getX(), entity.getY(), entity.getZ());
+        entityBolt.moveTo((int) Math.round(entity.getX()), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()));
 
         entity.fallDistance=0.0F;
         double motionX = (double)(-Mth.sin(entity.getYRot() / 180.0F * (float)Math.PI) * Mth.cos(entity.getXRot() / 180.0F * (float)Math.PI) * 9F);
@@ -207,7 +207,7 @@ currentSword.hurtAndBreak(SwordConfig.METEORIC_THUNDERSTORM_USE_COST.get(),entit
     @Override
     public void onCraftedBy(ItemStack stack, Level world, Player entity) {
         unlockSEACH(entity,world);
-        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.FIRE_EXTINGUISH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
         //world.explode(entity,entity.getX(),entity.getY(),entity.getZ(),1.0F, Level.ExplosionInteraction.NONE);
     }
 

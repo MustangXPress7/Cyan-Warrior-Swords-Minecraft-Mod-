@@ -100,14 +100,14 @@ public class WIND_BLAST extends SWORD_CWSR {
         entity.fallDistance = 0.0F;
 
         int radius=8;
-        AABB bb = new AABB(entity.getX()-radius, entity.getY()-radius, entity.getZ()-radius, entity.getX()+radius, entity.getY()+radius, entity.getZ()+radius);
+        AABB bb = new AABB((int) Math.round(entity.getX())-radius, (int) Math.round(entity.getY())-radius, (int) Math.round(entity.getZ())-radius, entity.getX()+radius, (int) Math.round(entity.getY())+radius, (int) Math.round(entity.getZ())+radius);
         List<Entity> e = world.getEntities(entity, bb);
         int entCountValid=0;
         for (int i = 0; i <= e.size() - 1; i++) {
             Entity em = e.get(i);
             if (em instanceof LivingEntity && !(em instanceof ArmorStand)){
                 entCountValid=entCountValid+1;
-                world.explode(entity,em.getX(),em.getY(),em.getZ(),0.5F, Level.ExplosionInteraction.NONE);
+                world.explode(entity,(int) Math.round(em.getX()),(int) Math.round(em.getY()),em.getZ(),0.5F, Level.ExplosionInteraction.NONE);
             }
         }
 
@@ -119,8 +119,8 @@ public class WIND_BLAST extends SWORD_CWSR {
                 float f1 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                 float f2 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                 double d1 = Mth.lerp(d0, entity.xo, entity.getX()) + (entity.getRandom().nextDouble() - 0.5D) * (double) entity.getBbWidth() * 6.0D;
-                double d2 = Mth.lerp(d0, entity.yo, entity.getY()) + entity.getRandom().nextDouble() * (double) entity.getBbHeight();
-                double d3 = Mth.lerp(d0, entity.zo, entity.getZ()) + (entity.getRandom().nextDouble() - 0.5D) * (double) entity.getBbWidth() * 6.0D;
+                double d2 = Mth.lerp(d0, entity.yo, (int) Math.round(entity.getY())) + entity.getRandom().nextDouble() * (double) entity.getBbHeight();
+                double d3 = Mth.lerp(d0, entity.zo, (int) Math.round(entity.getZ())) + (entity.getRandom().nextDouble() - 0.5D) * (double) entity.getBbWidth() * 6.0D;
                 world.addParticle(ParticleTypes.ANGRY_VILLAGER, d1, d2, d3, (double) f, (double) f1, (double) f2);
             }
         }

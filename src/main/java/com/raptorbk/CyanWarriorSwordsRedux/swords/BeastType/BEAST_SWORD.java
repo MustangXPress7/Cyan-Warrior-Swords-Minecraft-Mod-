@@ -77,7 +77,7 @@ public class BEAST_SWORD extends SWORD_CWSR {
 
         Vec3 look = entity.getLookAngle();
         Wolf wolfProjectile = new Wolf(EntityType.WOLF,world);
-        wolfProjectile.setPos(entity.getX(),entity.getY()+1,entity.getZ());
+        wolfProjectile.setPos((int) Math.round(entity.getX()),entity.getY()+1,entity.getZ());
         wolfProjectile.setDeltaMovement(look.x,look.y,look.z);
         wolfProjectile.setTame(true);
         wolfProjectile.tame(entity);
@@ -138,7 +138,7 @@ currentSword.hurtAndBreak(SwordConfig.BEAST_SWORD_USE_COST.get(),entity,Player -
     @Override
     public void onCraftedBy(ItemStack stack, Level world, Player entity) {
         unlockSEACH(entity,world);
-        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WOLF_GROWL, SoundSource.NEUTRAL, 0.5F, 1.0f);
+        world.playSound((Player) null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.WOLF_GROWL, SoundSource.NEUTRAL, 0.5F, 1.0f);
     }
 
 }

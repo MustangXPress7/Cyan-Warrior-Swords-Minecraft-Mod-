@@ -3,6 +3,7 @@ package com.raptorbk.CyanWarriorSwordsRedux.recipes;
 import com.raptorbk.CyanWarriorSwordsRedux.CyanWarriorSwordsReduxMod;
 import com.raptorbk.CyanWarriorSwordsRedux.util.ModItems;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -36,11 +37,15 @@ public class TransmutationRecipe extends AbstractCookingRecipe {
     }
 
 
-
     @Override
-    public ItemStack assemble(Container inv) {
+    public ItemStack assemble(Container p_43746_, RegistryAccess p_267063_) {
         return this.result.copy();
     }
+
+    /*@Override
+    public ItemStack assemble(Container inv) {
+        return this.result.copy();
+    }*/
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {
@@ -54,8 +59,10 @@ public class TransmutationRecipe extends AbstractCookingRecipe {
         return nonnulllist;
     }
 
+
+
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess p_266851_) {
         return this.result;
     }
 

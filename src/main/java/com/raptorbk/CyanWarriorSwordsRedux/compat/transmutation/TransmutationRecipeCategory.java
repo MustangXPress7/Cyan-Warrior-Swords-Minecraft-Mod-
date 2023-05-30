@@ -12,6 +12,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -76,7 +77,7 @@ public class TransmutationRecipeCategory implements IRecipeCategory<Transmutatio
     public void setRecipe(@Nonnull IRecipeLayoutBuilder recipeLayout, @Nonnull TransmutationRecipe recipe, @Nonnull IFocusGroup ingredients)
     {
 
-        recipeLayout.addSlot(RecipeIngredientRole.OUTPUT, 115, 34).addItemStack(recipe.getResultItem());
+        recipeLayout.addSlot(RecipeIngredientRole.OUTPUT, 115, 34).addItemStack(recipe.getResultItem((RegistryAccess) recipe));
         recipeLayout.addSlot(RecipeIngredientRole.INPUT, 55, 16).addIngredients(recipe.getIngredients().get(0));
 
     }

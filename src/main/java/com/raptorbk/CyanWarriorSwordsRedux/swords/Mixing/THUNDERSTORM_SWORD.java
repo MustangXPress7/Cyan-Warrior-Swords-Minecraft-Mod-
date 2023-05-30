@@ -99,7 +99,7 @@ public class THUNDERSTORM_SWORD extends SWORD_CWSR {
         int j = (int)(entity.yo + (entity.getY() - entity.yo) * (double)var4 + 1.62D - entity.getMyRidingOffset());
 
         LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt.moveTo(entity.getX(), entity.getY(), entity.getZ());
+        entityBolt.moveTo((int) Math.round(entity.getX()), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()));
         //Para tocar los valores de impulso, serían los últimos valores de "double motion" (en este caso, 10.5F)
         entity.fallDistance=0.0F;
         double motionX = (double)(-Mth.sin(entity.getYRot() / 180.0F * (float)Math.PI) * Mth.cos(entity.getXRot() / 180.0F * (float)Math.PI) * 7F);
@@ -169,7 +169,7 @@ currentSword.hurtAndBreak(SwordConfig.THUNDERSTORM_SWORD_USE_COST.get(),entity,P
             unlockSEACH(entity,world);
             ServerLevel worldSV = (ServerLevel) world;
             LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
-            entityBolt.moveTo(entity.getX(), entity.getY(), entity.getZ());
+            entityBolt.moveTo((int) Math.round(entity.getX()), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()));
             worldSV.addFreshEntity(entityBolt);
         }
     }

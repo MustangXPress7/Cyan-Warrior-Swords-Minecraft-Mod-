@@ -41,22 +41,22 @@ public class ExecuteSeffect implements SurroundEffect {
                 return;
             }
 
-            BlockPos pos0 = new BlockPos(TargetPos.getLocation().x() + 2, TargetPos.getLocation().y() + 2, TargetPos.getLocation().z() - 0);
-            BlockPos pos1 = new BlockPos(TargetPos.getLocation().x() - 2, TargetPos.getLocation().y() + 2, TargetPos.getLocation().z() - 0);
-            BlockPos pos2 = new BlockPos(TargetPos.getLocation().x() - 0, TargetPos.getLocation().y() + 2, TargetPos.getLocation().z() + 2);
-            BlockPos pos3 = new BlockPos(TargetPos.getLocation().x() - 0, TargetPos.getLocation().y() + 2, TargetPos.getLocation().z() - 2);
+            BlockPos pos0 = new BlockPos((int) Math.round((int) Math.round(TargetPos.getLocation().x() + 2)), (int) Math.round(TargetPos.getLocation().y() + 2), (int) Math.round(TargetPos.getLocation().z() - 0));
+            BlockPos pos1 = new BlockPos((int) Math.round(TargetPos.getLocation().x() - 2), (int) Math.round(TargetPos.getLocation().y() + 2), (int) Math.round(TargetPos.getLocation().z() - 0));
+            BlockPos pos2 = new BlockPos((int) Math.round(TargetPos.getLocation().x() - 0), (int) Math.round(TargetPos.getLocation().y() + 2), (int) Math.round(TargetPos.getLocation().z() + 2));
+            BlockPos pos3 = new BlockPos((int) Math.round(TargetPos.getLocation().x() - 0), (int) Math.round(TargetPos.getLocation().y() + 2), (int) Math.round(TargetPos.getLocation().z() - 2));
 
             //Mid Blocks
-            BlockPos pos4 = new BlockPos(TargetPos.getLocation().x() + 2, TargetPos.getLocation().y() + 1, TargetPos.getLocation().z() - 0);
-            BlockPos pos5 = new BlockPos(TargetPos.getLocation().x() - 2, TargetPos.getLocation().y() + 1, TargetPos.getLocation().z() - 0);
-            BlockPos pos6 = new BlockPos(TargetPos.getLocation().x() - 0, TargetPos.getLocation().y() + 1, TargetPos.getLocation().z() + 2);
-            BlockPos pos7 = new BlockPos(TargetPos.getLocation().x() - 0, TargetPos.getLocation().y() + 1, TargetPos.getLocation().z() - 2);
+            BlockPos pos4 = new BlockPos((int) Math.round(TargetPos.getLocation().x() + 2), (int) Math.round(TargetPos.getLocation().y() + 1), (int) Math.round(TargetPos.getLocation().z() - 0));
+            BlockPos pos5 = new BlockPos((int) Math.round(TargetPos.getLocation().x() - 2), (int) Math.round(TargetPos.getLocation().y() + 1), (int) Math.round(TargetPos.getLocation().z() - 0));
+            BlockPos pos6 = new BlockPos((int) Math.round(TargetPos.getLocation().x() - 0), (int) Math.round(TargetPos.getLocation().y() + 1), (int) Math.round(TargetPos.getLocation().z() + 2));
+            BlockPos pos7 = new BlockPos((int) Math.round(TargetPos.getLocation().x() - 0), (int) Math.round(TargetPos.getLocation().y() + 1), (int) Math.round(TargetPos.getLocation().z() - 2));
 
             //Lower Blocks
-            BlockPos pos8 = new BlockPos(TargetPos.getLocation().x() + 2, TargetPos.getLocation().y(), TargetPos.getLocation().z() - 0);
-            BlockPos pos9 = new BlockPos(TargetPos.getLocation().x() - 2, TargetPos.getLocation().y(), TargetPos.getLocation().z() - 0);
-            BlockPos pos10 = new BlockPos(TargetPos.getLocation().x() - 0, TargetPos.getLocation().y(), TargetPos.getLocation().z() + 2);
-            BlockPos pos11 = new BlockPos(TargetPos.getLocation().x() - 0, TargetPos.getLocation().y(), TargetPos.getLocation().z() - 2);
+            BlockPos pos8 = new BlockPos((int) Math.round(TargetPos.getLocation().x() + 2), (int) Math.round(TargetPos.getLocation().y()), (int) Math.round(TargetPos.getLocation().z() - 0));
+            BlockPos pos9 = new BlockPos((int) Math.round(TargetPos.getLocation().x() - 2), (int) Math.round(TargetPos.getLocation().y()), (int) Math.round(TargetPos.getLocation().z() - 0));
+            BlockPos pos10 = new BlockPos((int) Math.round(TargetPos.getLocation().x() - 0), (int) Math.round(TargetPos.getLocation().y()), (int) Math.round(TargetPos.getLocation().z() + 2));
+            BlockPos pos11 = new BlockPos((int) Math.round(TargetPos.getLocation().x() - 0), (int) Math.round(TargetPos.getLocation().y()), (int) Math.round(TargetPos.getLocation().z() - 2));
 
 
             if (world.isEmptyBlock(pos0)) {
@@ -116,22 +116,22 @@ public class ExecuteSeffect implements SurroundEffect {
 
     public void SurroundPlayer(Level world, Player entity, Block blk){
         //Top Blocks
-        BlockPos pos0 = new BlockPos(entity.getX(), entity.getY()+2, entity.getZ()-1);
-        BlockPos pos1 = new BlockPos(entity.getX(), entity.getY()+2, entity.getZ()+1);
-        BlockPos pos2 = new BlockPos(entity.getX()+1, entity.getY()+2, entity.getZ());
-        BlockPos pos3 = new BlockPos(entity.getX()-1, entity.getY()+2, entity.getZ());
+        BlockPos pos0 = new BlockPos((int) Math.round(entity.getX()), (int) Math.round(entity.getY()+2), (int) Math.round(entity.getZ()-1));
+        BlockPos pos1 = new BlockPos((int) Math.round(entity.getX()), (int) Math.round(entity.getY()+2), (int) Math.round(entity.getZ()+1));
+        BlockPos pos2 = new BlockPos((int) Math.round(entity.getX())+1, (int) Math.round(entity.getY()+2), (int) Math.round(entity.getZ()));
+        BlockPos pos3 = new BlockPos((int) Math.round(entity.getX())-1, (int) Math.round(entity.getY()+2), (int) Math.round(entity.getZ()));
 
         //Mid Blocks
-        BlockPos pos4 = new BlockPos(entity.getX(), entity.getY()+1, entity.getZ()-1);
-        BlockPos pos5 = new BlockPos(entity.getX(), entity.getY()+1, entity.getZ()+1);
-        BlockPos pos6 = new BlockPos(entity.getX()+1, entity.getY()+1, entity.getZ());
-        BlockPos pos7 = new BlockPos(entity.getX()-1, entity.getY()+1, entity.getZ());
+        BlockPos pos4 = new BlockPos((int) Math.round(entity.getX()), (int) Math.round(entity.getY()+1), (int) Math.round(entity.getZ()-1));
+        BlockPos pos5 = new BlockPos((int) Math.round(entity.getX()), (int) Math.round(entity.getY()+1), (int) Math.round(entity.getZ()+1));
+        BlockPos pos6 = new BlockPos((int) Math.round(entity.getX())+1, (int) Math.round(entity.getY()+1), (int) Math.round(entity.getZ()));
+        BlockPos pos7 = new BlockPos((int) Math.round(entity.getX())-1, (int) Math.round(entity.getY()+1), (int) Math.round(entity.getZ()));
 
         //Lower Blocks
-        BlockPos pos8 = new BlockPos(entity.getX(), entity.getY(), entity.getZ()-1);
-        BlockPos pos9 = new BlockPos(entity.getX(), entity.getY(), entity.getZ()+1);
-        BlockPos pos10 = new BlockPos(entity.getX()+1, entity.getY(), entity.getZ());
-        BlockPos pos11 = new BlockPos(entity.getX()-1, entity.getY(), entity.getZ());
+        BlockPos pos8 = new BlockPos((int) Math.round(entity.getX()), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()-1));
+        BlockPos pos9 = new BlockPos((int) Math.round(entity.getX()), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()+1));
+        BlockPos pos10 = new BlockPos((int) Math.round(entity.getX())+1, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()));
+        BlockPos pos11 = new BlockPos((int) Math.round(entity.getX())-1, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()));
 
         if(world.isEmptyBlock(pos0)){
             System.out.println(world.getBlockState(pos0).getBlock());

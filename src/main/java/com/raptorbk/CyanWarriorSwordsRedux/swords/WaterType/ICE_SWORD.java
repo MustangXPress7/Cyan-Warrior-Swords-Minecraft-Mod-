@@ -104,7 +104,7 @@ public class ICE_SWORD extends SWORD_CWSR {
 
         int radius=6;
         int entCountValid=0;
-        AABB bb = new AABB(entity.getX()-radius, entity.getY()-radius, entity.getZ()-radius, entity.getX()+radius, entity.getY()+radius, entity.getZ()+radius);
+        AABB bb = new AABB((int) Math.round(entity.getX())-radius, (int) Math.round(entity.getY())-radius, (int) Math.round(entity.getZ())-radius, entity.getX()+radius, (int) Math.round(entity.getY())+radius, (int) Math.round(entity.getZ())+radius);
         List<Entity> e = world.getEntities(entity, bb);
         for (int i = 0; i <= e.size() - 1; i++) {
             Entity em = e.get(i);
@@ -120,9 +120,9 @@ public class ICE_SWORD extends SWORD_CWSR {
                 float f = (((LivingEntity) em).getRandom().nextFloat() - 0.5F) * 0.2F;
                 float f1 = (((LivingEntity) em).getRandom().nextFloat() - 0.5F) * 0.2F;
                 float f2 = (((LivingEntity) em).getRandom().nextFloat() - 0.5F) * 0.2F;
-                double d1 = Mth.lerp(d0, em.xo, em.getX()) + (((LivingEntity) em).getRandom().nextDouble() - 0.5D) * (double)em.getBbWidth() * 2.0D;
-                double d2 = Mth.lerp(d0, em.yo, em.getY()) + ((LivingEntity) em).getRandom().nextDouble() * (double)em.getBbHeight();
-                double d3 = Mth.lerp(d0, em.zo, em.getZ()) + (((LivingEntity) em).getRandom().nextDouble() - 0.5D) * (double)em.getBbWidth() * 2.0D;
+                double d1 = Mth.lerp(d0, em.xo, (int) Math.round(em.getX())) + (((LivingEntity) em).getRandom().nextDouble() - 0.5D) * (double)em.getBbWidth() * 2.0D;
+                double d2 = Mth.lerp(d0, em.yo, (int) Math.round(em.getY())) + ((LivingEntity) em).getRandom().nextDouble() * (double)em.getBbHeight();
+                double d3 = Mth.lerp(d0, em.zo,(int) Math.round(em.getZ())) + (((LivingEntity) em).getRandom().nextDouble() - 0.5D) * (double)em.getBbWidth() * 2.0D;
                 world.addParticle(ParticleTypes.ITEM_SNOWBALL, d1, d2, d3, (double)f, (double)f1, (double)f2);
                 }
                 //
@@ -138,8 +138,8 @@ public class ICE_SWORD extends SWORD_CWSR {
                 float f1 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                 float f2 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                 double d1 = Mth.lerp(d0, entity.xo, entity.getX()) + (entity.getRandom().nextDouble() - 0.5D) * (double) entity.getBbWidth() * 6.0D;
-                double d2 = Mth.lerp(d0, entity.yo, entity.getY()) + entity.getRandom().nextDouble() * (double) entity.getBbHeight();
-                double d3 = Mth.lerp(d0, entity.zo, entity.getZ()) + (entity.getRandom().nextDouble() - 0.5D) * (double) entity.getBbWidth() * 6.0D;
+                double d2 = Mth.lerp(d0, entity.yo, (int) Math.round(entity.getY())) + entity.getRandom().nextDouble() * (double) entity.getBbHeight();
+                double d3 = Mth.lerp(d0, entity.zo, (int) Math.round(entity.getZ())) + (entity.getRandom().nextDouble() - 0.5D) * (double) entity.getBbWidth() * 6.0D;
                 world.addParticle(ParticleTypes.ANGRY_VILLAGER, d1, d2, d3, (double) f, (double) f1, (double) f2);
             }
         }
@@ -189,7 +189,7 @@ currentSword.hurtAndBreak(SwordConfig.ICE_SWORD_USE_COST.get(), entity,Player ->
 
         //Ojo con esto, esquiva cualquier tipo de bloqueo
         unlockSEACH(entity,world);
-        BlockPos pos = new BlockPos(entity.getX(), entity.getY()+3, entity.getZ());
+        BlockPos pos = new BlockPos((int) Math.round(entity.getX()), (int) Math.round(entity.getY())+3, (int) Math.round(entity.getZ()));
         world.setBlock(pos, Blocks.ICE.defaultBlockState(),1);
     }
 

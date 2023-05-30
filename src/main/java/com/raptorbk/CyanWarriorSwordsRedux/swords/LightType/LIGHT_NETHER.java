@@ -98,7 +98,7 @@ public class LIGHT_NETHER extends SWORD_CWSR {
 
 
 
-        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.BLAZE_AMBIENT, SoundSource.NEUTRAL, 1.0F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.BLAZE_AMBIENT, SoundSource.NEUTRAL, 1.0F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
 
         entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION,60,2));
         entity.addEffect(new MobEffectInstance(MobEffects.ABSORPTION,600,4));

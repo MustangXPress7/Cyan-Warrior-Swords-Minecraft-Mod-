@@ -109,7 +109,7 @@ public class ENDER_PORTAL extends SWORD_CWSR {
             if (world instanceof ServerLevel) {
                 BlockPos blockpos = ((ServerLevel) world).findNearestMapStructure(StructureTags.EYE_OF_ENDER_LOCATED, entity.blockPosition(), 100, false);
                 if (blockpos != null) {
-                    EyeOfEnder eyeofenderentity = new EyeOfEnder(world, entity.getX(), entity.getY(0.5D), entity.getZ());
+                    EyeOfEnder eyeofenderentity = new EyeOfEnder(world, entity.getX(), entity.getY(0.5D), (int) Math.round(entity.getZ()));
                     eyeofenderentity.setItem(itemstack);
                     eyeofenderentity.signalTo(blockpos);
                     world.addFreshEntity(eyeofenderentity);
@@ -117,7 +117,7 @@ public class ENDER_PORTAL extends SWORD_CWSR {
                         CriteriaTriggers.USED_ENDER_EYE.trigger((ServerPlayer)entity, blockpos);
                     }
 
-                    world.playSound((Player)null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_EYE_LAUNCH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
+                    world.playSound((Player)null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.ENDER_EYE_LAUNCH, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
                     world.levelEvent((Player)null, 1003, entity.blockPosition(), 0);
                     if (!entity.getAbilities().instabuild) {
                         itemstack.shrink(0);
