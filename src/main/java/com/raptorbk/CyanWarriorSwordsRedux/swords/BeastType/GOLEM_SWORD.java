@@ -92,7 +92,7 @@ public class GOLEM_SWORD extends SWORD_CWSR{
         //SPAWN FIRST GOLEM
         Vec3 look = entity.getLookAngle();
         IronGolem golemProjectile = new IronGolem(EntityType.IRON_GOLEM,world);
-        golemProjectile.setPos((int) Math.round(entity.getX()),entity.getY()+1,entity.getZ());
+        golemProjectile.setPos(entity.getX(),entity.getY()+1,entity.getZ());
         golemProjectile.setDeltaMovement(look.x,look.y,look.z);
         world.addFreshEntity(golemProjectile);
         //entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED,900,3));
@@ -148,6 +148,6 @@ currentSword.hurtAndBreak(SwordConfig.GOLEM_SWORD_USE_COST.get(),entity,Player -
     @Override
     public void onCraftedBy(ItemStack stack, Level world, Player entity) {
         unlockSEACH(entity,world);
-        world.playSound((Player) null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.IRON_GOLEM_STEP, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.IRON_GOLEM_STEP, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
     }
 }

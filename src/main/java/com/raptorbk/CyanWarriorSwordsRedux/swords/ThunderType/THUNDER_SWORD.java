@@ -101,20 +101,20 @@ public class THUNDER_SWORD extends SWORD_CWSR {
         ServerLevel worldSV = (ServerLevel) world;
 
         LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt.moveTo((int) Math.round(entity.getX()), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ())-2);
+        entityBolt.moveTo(entity.getX(), entity.getY(), entity.getZ()-2);
 
 
 
         LightningBolt entityBolt2 = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt2.moveTo((int) Math.round(entity.getX()), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ())+2);
+        entityBolt2.moveTo(entity.getX(), entity.getY(), entity.getZ()+2);
 
 
         LightningBolt entityBolt3 = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt3.moveTo((int) Math.round(entity.getX())+2, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()));
+        entityBolt3.moveTo(entity.getX()+2, entity.getY(), entity.getZ());
 
 
         LightningBolt entityBolt4 = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt4.moveTo((int) Math.round(entity.getX())-2, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()));
+        entityBolt4.moveTo(entity.getX()-2, entity.getY(), entity.getZ());
 
         worldSV.addFreshEntity(entityBolt);
         worldSV.addFreshEntity(entityBolt2);
@@ -146,9 +146,9 @@ currentSword.hurtAndBreak(SwordConfig.THUNDER_SWORD_USE_COST.get(),entity,Player
         unlockSEACH(entity,world);
         ServerLevel worldSV = (ServerLevel) world;
         LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt.moveTo((int) Math.round(entity.getX()), (int) Math.round(entity.getY())+5, (int) Math.round(entity.getZ()));
+        entityBolt.moveTo(entity.getX(), entity.getY()+5, entity.getZ());
         worldSV.addFreshEntity(entityBolt);
-        world.playSound((Player) null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
     }
 
     public void addEffectsTick(Player playerIn){

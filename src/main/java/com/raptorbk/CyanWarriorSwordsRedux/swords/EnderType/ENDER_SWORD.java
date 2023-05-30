@@ -85,7 +85,7 @@ public class ENDER_SWORD extends ENDER_CLASS_SWORD {
 
       
         ItemStack itemstack = new ItemStack(Items.ENDER_PEARL);
-        world.playSound(null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
         if (!world.isClientSide) {
             ThrownEnderpearl enderpearlentity = new ThrownEnderpearl(world, entity);
             enderpearlentity.setItem(itemstack);

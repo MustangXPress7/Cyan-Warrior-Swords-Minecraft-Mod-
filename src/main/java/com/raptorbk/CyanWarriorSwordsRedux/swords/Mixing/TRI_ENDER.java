@@ -109,11 +109,11 @@ public class TRI_ENDER extends ENDER_CLASS_SWORD {
 
 
         ItemStack itemstack = new ItemStack(Items.ENDER_PEARL);
-        world.playSound(null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.ENDER_PEARL_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
 
         ItemStack currentSword = entity.getItemInHand(handIn);
         int radius=8;
-        AABB bb = new AABB((int) Math.round(entity.getX())-radius, (int) Math.round(entity.getY())-radius, (int) Math.round(entity.getZ())-radius, entity.getX()+radius, (int) Math.round(entity.getY())+radius, (int) Math.round(entity.getZ())+radius);
+        AABB bb = new AABB(entity.getX()-radius, entity.getY()-radius, entity.getZ()-radius, entity.getX()+radius, entity.getY()+radius, entity.getZ()+radius);
         List<Entity> e = world.getEntities(entity, bb);
 
 
@@ -135,8 +135,8 @@ public class TRI_ENDER extends ENDER_CLASS_SWORD {
                     float f1 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                     float f2 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                     double d1 = Mth.lerp(d0, entity.xo, entity.getX()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
-                    double d2 = Mth.lerp(d0, entity.yo, (int) Math.round(entity.getY())) + entity.getRandom().nextDouble() * (double)entity.getBbHeight();
-                    double d3 = Mth.lerp(d0, entity.zo, (int) Math.round(entity.getZ())) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
+                    double d2 = Mth.lerp(d0, entity.yo, entity.getY()) + entity.getRandom().nextDouble() * (double)entity.getBbHeight();
+                    double d3 = Mth.lerp(d0, entity.zo, entity.getZ()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
                     world.addParticle(ParticleTypes.ANGRY_VILLAGER, d1, d2, d3, (double)f, (double)f1, (double)f2);
                 }
             }
@@ -148,12 +148,12 @@ public class TRI_ENDER extends ENDER_CLASS_SWORD {
                 if (em instanceof ServerPlayer && !(em instanceof ArmorStand) && !em.isSpectator()){
                     if(!(((ServerPlayer) em).isCreative()) && !(((ServerPlayer) em).getAbilities().flying)){
                         ((ServerPlayer)em).connection.send(new ClientboundSetEntityMotionPacket(em));
-                        ((ServerPlayer) em).knockback(2,entity.getX() - (int) Math.round(em.getX()), (int) Math.round(entity.getZ()) -(int) Math.round(em.getZ()));
+                        ((ServerPlayer) em).knockback(2,entity.getX() - em.getX(), entity.getZ() - em.getZ());
                         em.hurtMarked=true;
                     }
                 }else{
                     if (em instanceof LivingEntity && !(em instanceof ArmorStand)){
-                        ((LivingEntity) em).knockback(2,entity.getX() - (int) Math.round(em.getX()), (int) Math.round(entity.getZ()) -(int) Math.round(em.getZ()));
+                        ((LivingEntity) em).knockback(2,entity.getX() - em.getX(), entity.getZ() - em.getZ());
                     }
                 }
             }
@@ -192,20 +192,20 @@ public class TRI_ENDER extends ENDER_CLASS_SWORD {
 
 
         LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt.moveTo((int) Math.round(entity.getX())+5, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()-1));
+        entityBolt.moveTo(entity.getX()+5, entity.getY(), entity.getZ()-1);
 
 
 
         LightningBolt entityBolt2 = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt2.moveTo((int) Math.round(entity.getX())+5, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()-1));
+        entityBolt2.moveTo(entity.getX()+5, entity.getY(), entity.getZ()-1);
 
 
         LightningBolt entityBolt3 = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt3.moveTo((int) Math.round(entity.getX())-5, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()+1));
+        entityBolt3.moveTo(entity.getX()-5, entity.getY(), entity.getZ()+1);
 
 
         LightningBolt entityBolt4 = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt4.moveTo((int) Math.round(entity.getX())-5, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ())-3);
+        entityBolt4.moveTo(entity.getX()-5, entity.getY(), entity.getZ()-3);
 
         worldSV.addFreshEntity(entityBolt);
         worldSV.addFreshEntity(entityBolt2);

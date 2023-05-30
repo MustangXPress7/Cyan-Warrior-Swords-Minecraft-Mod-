@@ -122,12 +122,12 @@ public class DARK_NETHER extends SWORD_CWSR {
         WitherSkull witherEntity = new WitherSkull(world, entity,vec3.x,vec3.y,vec3.z);
         witherEntity.setXRot(entity.getXRot());
         witherEntity.setYRot(entity.getYRot());
-        witherEntity.setPos((int) Math.round(entity.getX()),entity.getY()+2,entity.getZ());
+        witherEntity.setPos(entity.getX(),entity.getY()+2,entity.getZ());
         witherEntity.xPower=vec3.x;
         witherEntity.yPower=vec3.y;
         witherEntity.zPower=vec3.z;
         world.addFreshEntity(witherEntity);
-        world.playSound((Player) null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.WITHER_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.WITHER_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
 
         Random r = new Random();
         int game = r.nextInt(100);

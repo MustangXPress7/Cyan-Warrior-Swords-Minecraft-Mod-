@@ -106,7 +106,7 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
     @Override
     public InteractionResultHolder<ItemStack> eventRC(Level world, Player entity, InteractionHand handIn, ItemStack OffHandItem) {
         int radius=8;
-        AABB bb = new AABB((int) Math.round(entity.getX())-radius, (int) Math.round(entity.getY())-radius, (int) Math.round(entity.getZ())-radius, entity.getX()+radius, (int) Math.round(entity.getY())+radius, (int) Math.round(entity.getZ())+radius);
+        AABB bb = new AABB(entity.getX()-radius, entity.getY()-radius, entity.getZ()-radius, entity.getX()+radius, entity.getY()+radius, entity.getZ()+radius);
         List<Entity> e = world.getEntities(entity, bb);
 
 
@@ -128,8 +128,8 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
                     float f1 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                     float f2 = (entity.getRandom().nextFloat() - 0.5F) * 0.2F;
                     double d1 = Mth.lerp(d0, entity.xo, entity.getX()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
-                    double d2 = Mth.lerp(d0, entity.yo, (int) Math.round(entity.getY())) + entity.getRandom().nextDouble() * (double)entity.getBbHeight();
-                    double d3 = Mth.lerp(d0, entity.zo, (int) Math.round(entity.getZ())) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
+                    double d2 = Mth.lerp(d0, entity.yo, entity.getY()) + entity.getRandom().nextDouble() * (double)entity.getBbHeight();
+                    double d3 = Mth.lerp(d0, entity.zo, entity.getZ()) + (entity.getRandom().nextDouble() - 0.5D) * (double)entity.getBbWidth() * 6.0D;
                     world.addParticle(ParticleTypes.ANGRY_VILLAGER, d1, d2, d3, (double)f, (double)f1, (double)f2);
                 }
             }
@@ -144,20 +144,20 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
 
         entity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE,50,4));
         LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt.moveTo((int) Math.round(entity.getX()), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()-1));
+        entityBolt.moveTo(entity.getX(), entity.getY(), entity.getZ()-1);
 
 
 
         LightningBolt entityBolt2 = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt2.moveTo((int) Math.round(entity.getX()), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()+1));
+        entityBolt2.moveTo(entity.getX(), entity.getY(), entity.getZ()+1);
 
 
         LightningBolt entityBolt3 = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt3.moveTo((int) Math.round(entity.getX())+1, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()));
+        entityBolt3.moveTo(entity.getX()+1, entity.getY(), entity.getZ());
 
 
         LightningBolt entityBolt4 = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt4.moveTo((int) Math.round(entity.getX())-1, (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()));
+        entityBolt4.moveTo(entity.getX()-1, entity.getY(), entity.getZ());
 
         worldSV.addFreshEntity(entityBolt);
         worldSV.addFreshEntity(entityBolt2);
@@ -167,7 +167,7 @@ public class THUNDER_SHOCK extends SWORD_CWSR {
             Entity em = e.get(i);
             if (em instanceof LivingEntity && !(em instanceof ArmorStand)){
                 LightningBolt entityBolt5 = EntityType.LIGHTNING_BOLT.create(worldSV);
-                entityBolt5.moveTo((int) Math.round(em.getX()), (int) Math.round(em.getY()),(int) Math.round(em.getZ()));
+                entityBolt5.moveTo(em.getX(), em.getY(), em.getZ());
                 worldSV.addFreshEntity(entityBolt5);
             }
 
@@ -211,9 +211,9 @@ currentSword.hurtAndBreak(SwordConfig.THUNDER_SHOCK_SWORD_USE_COST.get(), entity
         unlockSEACH(entity,world);
         ServerLevel worldSV = (ServerLevel) world;
         LightningBolt entityBolt = EntityType.LIGHTNING_BOLT.create(worldSV);
-        entityBolt.moveTo((int) Math.round(entity.getX()), (int) Math.round(entity.getY())+5, (int) Math.round(entity.getZ()));
+        entityBolt.moveTo(entity.getX(), entity.getY()+5, entity.getZ());
         worldSV.addFreshEntity(entityBolt);
-        world.playSound((Player) null, entity.getX(), (int) Math.round(entity.getY()), (int) Math.round(entity.getZ()), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
+        world.playSound((Player) null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.NEUTRAL, 0.5F, 0.4F / (Mth.nextFloat(world.random,0.0F,1.0F) * 0.4F + 0.8F));
     }
 
     @Override

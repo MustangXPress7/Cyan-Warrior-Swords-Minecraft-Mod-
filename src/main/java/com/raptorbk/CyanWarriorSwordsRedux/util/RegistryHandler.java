@@ -283,7 +283,7 @@ public class RegistryHandler {
                 builder -> builder.icon(() -> RegistryHandler.cyan_SWORD.get().getDefaultInstance())
                         .title(Component.translatable("CreativeModeTab.cwsrTab"))
                         .withLabelColor(0x664400)
-                        .displayItems((features, output) ->
+                        .displayItems((features, output, hasPermissions) ->
                                 output.acceptAll(CUSTOM_CREATIVE_TAB_ITEMS.stream().map(item -> item.get().getDefaultInstance()).toList())
                         )
         );
