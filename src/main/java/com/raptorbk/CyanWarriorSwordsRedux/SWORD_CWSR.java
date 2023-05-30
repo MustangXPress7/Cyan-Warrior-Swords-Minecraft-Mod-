@@ -142,7 +142,7 @@ public class SWORD_CWSR extends SwordItem {
 
     public void useRightClick(Level worldIn, Player playerIn, InteractionHand hand) {
         this.firstExec=false;
-       this.asItem().use(worldIn, playerIn, hand);
+        this.asItem().use(worldIn, playerIn, hand);
     }
 
     public InteractionResultHolder<ItemStack> eventRC(Level world, Player entity, InteractionHand handIn, ItemStack OffHandItem) {

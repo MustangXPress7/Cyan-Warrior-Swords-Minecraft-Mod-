@@ -1,14 +1,30 @@
 1.19.x Changelog
 44.1
 ====
- - 44.1.7 Fix missing hanging sign material for modded wood type (#9303)
- - 44.1.6 Fire TickEvent.LevelTickEvent on ClientLevel tick (#9299)
- - 44.1.5 Add ClientChatReceivedEvent for system messages (#9284)
- - 44.1.4 PR Action update (#9274)
- - 44.1.3 fix HangingSignEditScreen crash when using custom wood types using modid (#9294)
- - 44.1.2 Bump SecureJarHandler version, to help identify invalid mods.
- - 44.1.1 [1.19.3] Hotfix missing null check in createUnbakedItemElements (#9285)
- - 44.1.0 Mark 1.19.3 Recommended Build
+ - 44.1.23 Fix experimental world warning screen appearing everytime (#9375)
+ - 44.1.22 Fix continuing to use items after dropping or when a shield breaks (MC-231097, MC-168573) (#9344)
+ - 44.1.21 Add onStopUsing hook to IForgeItem (#9343)
+ - 44.1.20 Document RegisterParticleProvidersEvent's APIs (#9346)
+ - 44.1.19 Fix incorrect ListTag.getLongArray result (MC-260378) (#9351)
+ - 44.1.18 Fix missing patch that left TagBuilder#replace unused (#9354)
+ - 44.1.17 Add 2 new RenderLevelStageEvent.Stage for After Entities and After Block Entities (#9259)
+ - 44.1.16 Cleanup StemBlock Patch (#9337)
+ - 44.1.15 Cleanup ItemProperties patch (#9332)
+ - 44.1.14 Make IForgeIntrinsicHolderTagAppender methods properly chainable (#9331)
+ - 44.1.13 Fix in custom fluids not respecting max height correctly. (#9319)
+ - 44.1.12 Fix inconsistent vaporization in BucketItem & FluidType (#9269)
+ - 44.1.11 Fix reloading event firing during server shutdown and add explicit unloading event instead (#9016)
+ - 44.1.10 Homogenize and/or holdersets when serializing to prevent serializing to NBT from crashing (#9048) Fixes #9043
+ - 44.1.9  [1.19.x] Fix `ForgeSlider` not respecting custom height (#9237)
+ - 44.1.8  Fix stepsound for blocks in the inside_step_sound_blocks tag. (#9318)
+ - 44.1.7  Fix missing hanging sign material for modded wood type (#9303)
+ - 44.1.6  Fire TickEvent.LevelTickEvent on ClientLevel tick (#9299)
+ - 44.1.5  Add ClientChatReceivedEvent for system messages (#9284)
+ - 44.1.4  PR Action update (#9274)
+ - 44.1.3  fix HangingSignEditScreen crash when using custom wood types using modid (#9294)
+ - 44.1.2  Bump SecureJarHandler version, to help identify invalid mods.
+ - 44.1.1  [1.19.3] Hotfix missing null check in createUnbakedItemElements (#9285)
+ - 44.1.0  Mark 1.19.3 Recommended Build
 
 44.0
 ====

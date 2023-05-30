@@ -122,6 +122,11 @@ repositories {
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
         url = "https://modmaven.dev"
@@ -132,22 +137,14 @@ dependencies {
     // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft', it is assumed
     // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.19.3-44.1.7'
+    minecraft 'net.minecraftforge:forge:1.19.3-44.1.23'
 
-    // Real mod deobf dependency examples - these get remapped to your current mappings
-    // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
 
-    // Examples using mod jars from ./libs
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.3-common-api:12.4.0.22")
+    compileOnly fg.deobf("mezz.jei:jei-1.19.3-forge-api:12.4.0.22")
 
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    runtimeOnly fg.deobf("mezz.jei:jei-1.19.3-forge:12.4.0.22")
 
-    compileOnly fg.deobf("mezz.jei:jei-1.19.3-common-api:12.1.1.8")
-    compileOnly fg.deobf("mezz.jei:jei-1.19.3-forge-api:12.1.1.8")
-
-    runtimeOnly fg.deobf("mezz.jei:jei-1.19.3-forge:12.1.1.8")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.
@@ -164,6 +161,7 @@ jar {
         ])
     }
 }
+
 
 // Example configuration to allow publishing using the maven-publish plugin
 // This is the preferred method to reobfuscate your jar file
